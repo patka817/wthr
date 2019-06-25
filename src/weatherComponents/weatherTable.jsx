@@ -11,9 +11,9 @@ class WeatherTablePresentational extends React.Component {
 
     aggregateData() {
         let data = null;
-        if (this.props.smhiData) {
+        if (this.props.smhiForecast) {
             data = {};
-            this.props.smhiData.forEach(val => {
+            this.props.smhiForecast.timeSerie.forEach(val => {
                 if (!val.isInstant()) {
                     return;
                 }
@@ -23,9 +23,9 @@ class WeatherTablePresentational extends React.Component {
                 };
             });
         }
-        if (this.props.yrData) {
+        if (this.props.yrForecast) {
             data = data ? data : {};
-            this.props.yrData.forEach(val => {
+            this.props.yrForecast.timeSerie.forEach(val => {
                 if (!val.isInstant()) {
                     return;
                 }
@@ -71,8 +71,8 @@ class WeatherTablePresentational extends React.Component {
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
-        yrData: state.yrData,
-        smhiData: state.smhiData
+        yrForecast: state.yrForecast,
+        smhiForecast: state.smhiForecast
     };
 };
 

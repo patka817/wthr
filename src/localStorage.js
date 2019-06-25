@@ -1,4 +1,8 @@
-import TimeSerie from "./timeSerie";
+import { Forecast, Time } from "./timeSerie";
+
+const DATE_KEYS = ['endTime', 'startTime', 'approvedTime'];
+const FORECAST_KEYS = ['yrForecast', 'smhiForecast'];
+const TIMESERIES_KEYS = ['timeSerie'];
 
 export const loadState = () => {
     try {
@@ -7,9 +11,11 @@ export const loadState = () => {
             return undefined;
         }
         let state = JSON.parse(serializedState, (name, value) => {
-            if (name === 'smhiData' || name === 'yrData') {
-                return value.map(x => new TimeSerie(x));
-            } else if (name === 'endTime' || name === 'startTime' || name === 'approvedTime') {
+            if (FORECAST_KEYS.indexOf(name) !== -1) {
+                return new Forecast(value);
+            } else if (TIMESERIES_KEYS.indexOf(name) !== -1) {
+                return value.map(x => new Time(x));
+            } else if (DATE_KEYS.indexOf(name) !== -1) {
                 return new Date(value);
             }
             return value;

@@ -1,5 +1,5 @@
 import { fetchAndExtractText } from './util';
-import TimeSerie from '../timeSerie';
+import { Time, Forecast } from '../timeSerie';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
@@ -77,13 +77,15 @@ const parseResponseXML = (txt) => {
         return null;
     }
 
+    let forecast = new Forecast();
+    forecast.approvedTime = approvedTime;
+
     // YR's data comes in different timeseries: 
     // 1. instantaneously (from=T, to=T)
     // 2. from T-1 to T, for precipitation, symbol
     // 3. from T-2 to T, for precipitation, symbol
     // 4. from T-3 to T, for precipitation, symbol
     // 5. from T-6 to T, for precipitation, min/max temp, symbol
-    let timeSeries = [];
     for (let index = 0; index < xmlTimeSeries.length; index++) {
         const xmlTimeSerie = xmlTimeSeries[index];
         if (!xmlTimeSerie) {
@@ -100,10 +102,9 @@ const parseResponseXML = (txt) => {
 
         const toDate = new Date(toDateString);
         const fromDate = new Date(fromDateString);
-        let timeSerie = new TimeSerie();
+        let timeSerie = new Time();
         timeSerie.endTime = toDate;
         timeSerie.startTime = fromDate;
-        timeSerie.approvedTime = approvedTime;
 
         if ((toDate - fromDate) === 0) {
             // TODO: configurable... 
@@ -170,10 +171,10 @@ const parseResponseXML = (txt) => {
             
 
         }
-        timeSeries.push(timeSerie);
+        forecast.timeSerie.push(timeSerie);
     }
 
-    return timeSeries;
+    return forecast;
 };
 
 const fetchYRData = (lat, lon) => {

@@ -1,5 +1,5 @@
 import { truncate, fetchAndExtractJSON } from './util';
-import TimeSerie from './../timeSerie';
+import { Forecast, Time } from './../timeSerie';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
@@ -36,48 +36,50 @@ const mappingTimeParametersToTimeSerieProp = {
 };
 const parseResponseJSON = (json) => {
     const approvedTime = json['approvedTime'] ? new Date(json['approvedTime']) : null;
+    let forecast = new Forecast();
+    forecast.approvedTime = approvedTime;
+
     if ('timeSeries' in json) {
         let prevParsedTimeSerie = null;
-        let res = [];
         for (let index in json.timeSeries) {
             let x = json.timeSeries[index];
-            let timeSerie = new TimeSerie();
-            timeSerie.approvedTime = approvedTime;
-            mapObjects(timeSerie, x, 'endTime', 'validTime', (val) => new Date(val));
+            let time = new Time();
+            
+            mapObjects(time, x, 'endTime', 'validTime', (val) => new Date(val));
 
             // SMHI's time is indirect given by the previous time (from/start time) until 'validTime' (to/end date).
             // But, some parameters in the data is instantaniously (e.g. only holds for the exact validTime), thus we must create two time/termins..
-            timeSerie.startTime = prevParsedTimeSerie ? prevParsedTimeSerie.endTime : timeSerie.endTime;
-            let instantaniouslyTimeSerie = new TimeSerie();
-            if (timeSerie.isInstant()) {
-                instantaniouslyTimeSerie = timeSerie;
+            time.startTime = prevParsedTimeSerie ? prevParsedTimeSerie.endTime : time.endTime;
+            let instantaniouslyTime = new Time();
+            if (time.isInstant()) {
+                instantaniouslyTime = time;
             } else {
-                instantaniouslyTimeSerie.approvedTime = timeSerie.approvedTime;
-                instantaniouslyTimeSerie.endTime = timeSerie.endTime;
-                instantaniouslyTimeSerie.startTime = timeSerie.endTime;
-                res.push(instantaniouslyTimeSerie);
+                instantaniouslyTime.approvedTime = time.approvedTime;
+                instantaniouslyTime.endTime = time.endTime;
+                instantaniouslyTime.startTime = time.endTime;
+                forecast.timeSerie.push(instantaniouslyTime);
             }
 
             for (let jsonParameterName in mappingInstantJSONParametersToTimeSerieProp) {
                 let timeSerieProp = mappingInstantJSONParametersToTimeSerieProp[jsonParameterName];
                 const jsonParam = x.parameters.find(val => val.name === jsonParameterName);
-                mapObjects(instantaniouslyTimeSerie[timeSerieProp], jsonParam, 'value', 'values', (values) => values.length === 1 ? values[0] : values);
-                mapObjects(instantaniouslyTimeSerie[timeSerieProp], jsonParam, 'unit');
+                mapObjects(instantaniouslyTime[timeSerieProp], jsonParam, 'value', 'values', (values) => values.length === 1 ? values[0] : values);
+                mapObjects(instantaniouslyTime[timeSerieProp], jsonParam, 'unit');
             }
-            instantaniouslyTimeSerie.weatherSymbol = x.parameters.find(val => val.name === 'Wsymb2').values[0];
+            instantaniouslyTime.weatherSymbol = x.parameters.find(val => val.name === 'Wsymb2').values[0];
 
             for (let jsonParameterName in mappingTimeParametersToTimeSerieProp) {
                 let timeSerieProp = mappingTimeParametersToTimeSerieProp[jsonParameterName];
                 const jsonParam = x.parameters.find(val => val.name === jsonParameterName);
-                mapObjects(timeSerie[timeSerieProp], jsonParam, 'value', 'values', (values) => values.length === 1 ? values[0] : values);
-                mapObjects(timeSerie[timeSerieProp], jsonParam, 'unit');
+                mapObjects(time[timeSerieProp], jsonParam, 'value', 'values', (values) => values.length === 1 ? values[0] : values);
+                mapObjects(time[timeSerieProp], jsonParam, 'unit');
             }
 
-            res.push(timeSerie);
-            prevParsedTimeSerie = timeSerie;            
+            forecast.timeSerie.push(time);
+            prevParsedTimeSerie = time;
         }
 
-        return res;
+        return forecast;
     } else {
         throw Error('Missing data in SMHI JSON');
     }

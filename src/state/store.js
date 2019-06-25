@@ -14,8 +14,8 @@ const configureStore = () => {
 
     store.subscribe(() => {
         console.log('saving state');
-        const { lat, lon, city, smhiData, yrData } = store.getState();
-        saveState({ lat, lon, city, smhiData, yrData });
+        const { lat, lon, city, smhiForecast, yrForecast } = store.getState();
+        saveState({ lat, lon, city, smhiForecast, yrForecast });
     });
 
     return store;

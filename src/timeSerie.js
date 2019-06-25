@@ -35,8 +35,8 @@ export class Parameter {
         this.unit = unit;
     }
 };
-// TODO: rename to Time/termin ... 
-export default class TimeSerie {
+
+export class Time {
     endTime;
     startTime;
     weatherSymbol;
@@ -77,3 +77,17 @@ export default class TimeSerie {
         return this.startTime.getHour() - this.endTime.getHour();
     }
 };
+
+export class Forecast {
+    approvedTime;
+    timeSerie;
+
+    constructor(data) {
+        this.approvedTime = null;
+        this.timeSerie = [];
+
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
+}

@@ -5,8 +5,8 @@ export const initialState = {
     lon: null,
     city: null,
     fetchingPosition: false,
-    smhiData: null,
-    yrData: null,
+    smhiForecast: null,
+    yrForecast: null,
     loading: false,
     errorMessage: null
 };
@@ -29,8 +29,8 @@ export const rootReducer = (state = initialState, action) => {
         case Actions.FETCH_SUCCESS:
             return {
                 ...state,
-                smhiData: action.smhi,
-                yrData: action.yr,
+                smhiForecast: action.smhi,
+                yrForecast: action.yr,
                 loading: false,
                 errorMessage: null,
             }

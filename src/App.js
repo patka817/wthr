@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
 import './App.css';
+import configureStore from './state/store';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import GPSButton from './positionComponents/gpsButton';
+import WeatherTable from './weatherComponents/weatherTable';
+import ReloadDataButton from './weatherComponents/reloadDataButton';
+
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={configureStore()}>
+        <div className="App">
+          <GPSButton />
+          <ReloadDataButton />
+          <WeatherTable />
+        </div>
+      </Provider>
+    );
+  }
 }
 
 export default App;

@@ -1,3 +1,5 @@
+const ONE_HOUR = 1000*60*60;
+
 // The same mapping as SMHI
 export const WeatherSymbolMap = {
     1:	`Clear sky`,
@@ -67,27 +69,32 @@ export class Time {
     }
 
     isInstant() {
-        return this.startTime && this.endTime && ((this.endTime - this.startTime) === 0);
+        return this.startTime && this.endTime && ((this.endTime.getTime() - this.startTime.getTime()) === 0);
     }
 
+    
     timeLength() {
         if (!this.startTime || !this.endTime) {
             return undefined;
         }
-        return this.startTime.getHour() - this.endTime.getHour();
+        return Math.round((this.endTime - this.startTime)/(ONE_HOUR));
     }
 };
 
 export class Forecast {
+    sourceName;
     approvedTime;
     timeSerie;
 
     constructor(data) {
         this.approvedTime = null;
         this.timeSerie = [];
+        this.sourceName = 'unknown';
 
         if (data) {
             Object.assign(this, data);
         }
     }
+
+    
 }

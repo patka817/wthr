@@ -1,3 +1,161 @@
 .App {
   text-align: center;
 }
+
+/* AppBar */
+
+.top-toolbar {
+  flex: 1 1 50%;
+}
+
+.right-icons {
+  flex: 1 1 25%;
+  justify-self: flex-start;
+  text-align: right;
+}
+
+.left-icons {
+  flex: 1 1 25%;
+  text-align: left;
+}
+
+/* Forecast tggle */
+
+#toggle-forecast-group {
+  padding-top: 1rem;
+}
+
+#toggle-forecast-group > button {
+  min-width: 100px;
+}
+
+#toggle-forecast-group > button:disabled {
+  background-color: lightgray;
+  color: black;
+}
+/* Weather */
+
+.weathertable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* DAILY FORECAST */
+
+.day-weather-row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-areas:
+    "date date date night morning afternoon evening minmax prec wind";
+  justify-content: stretch;
+  align-items: center;
+  justify-items: center;
+  padding: 1.5em 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.day-weather-row-date {
+    grid-area: date;
+    justify-self: start;
+}
+
+.day-weather-row-night-icon {
+   grid-area: night;
+}
+
+.day-weather-row-morning-icon {
+   grid-area: morning;
+}
+
+.day-weather-row-afternoon-icon {
+   grid-area: afternoon;
+}
+
+.day-weather-row-evening-icon {
+   grid-area: evening;
+}
+
+.day-weather-row-minmax {
+   grid-area: minmax;
+   color: RED;
+}
+
+.day-weather-row-prec {
+   grid-area: prec;
+   color: blue;
+}
+
+.day-weather-row-wind {
+   grid-area: wind;
+}
+
+/* HOURLY FORECAST CARD */
+
+.hourlyWeatherCard {
+  margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: 20% auto;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'hour forecastrows';
+}
+
+.hourlyForecastRow {
+  display: grid;
+  margin: 0.5rem 0;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(20px, auto);
+  grid-template-areas:
+  'forecast temp symbol wind precipitation';
+}
+
+.hour-container {
+  align-self: center;
+  grid-area: 'hour';
+}
+
+.forecast-row-container {
+    grid-area: 'forecastrows';
+}
+
+.forecastrow-sourcename-container {
+  grid-area: 'forecast';
+}
+
+.forecastrow-temp-container {
+  grid-area: 'temp';
+}
+
+.forecastrow-symbol-container {
+  grid-area: 'symbol';
+}
+
+.forecastrow-wind-container {
+  grid-area: 'wind';
+}
+
+.forecastrow-precipitation-container {
+  grid-area: 'precipitation';
+}
+
+.day-weather-row-header {
+  padding-bottom: 0.25rem;
+}
+
+/* To get correct color on header, this must be declared here! */
+.day-weather-header {
+  font-size: 0.75rem;
+  color: black;
+}
+
+/* Animation */
+
+.rotate {
+  animation: spin 2s infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); } 
+}

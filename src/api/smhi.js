@@ -6,6 +6,36 @@ const PLACEHOLDER_LON = '{longitude}';
 const SMHI_VERSION = 2;
 const SMHI_API = `https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/${SMHI_VERSION}/geotype/point/lon/{longitude}/lat/{latitude}/data.json`;
 
+const SMHI_TO_YR_SYMB_MAPPING = {
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 3,
+    5: 4,
+    6: 4,
+    7: 15,
+    8: 5,
+    9: 41,
+    10: 41,
+    11: 11,
+    12: 42,
+    13: 7,
+    14: 43,
+    15: 44,
+    16: 45,
+    17: 45,
+    18: 9,
+    19: 10,
+    20: 10,
+    21: 11,
+    22: 47,
+    23: 12,
+    24: 48,
+    25: 49,
+    26: 13,
+    27: 50
+}
+
 const mapObjects = (intoObj, fromObj, key, fromObjectKey = undefined, valueTransformer = (val) => val) => {
     if (!fromObj) {
         throw Error('Missing object to map from');
@@ -66,7 +96,13 @@ const parseResponseJSON = (json) => {
                 mapObjects(instantaniouslyTime[timeSerieProp], jsonParam, 'value', 'values', (values) => values.length === 1 ? values[0] : values);
                 mapObjects(instantaniouslyTime[timeSerieProp], jsonParam, 'unit');
             }
-            instantaniouslyTime.weatherSymbol = x.parameters.find(val => val.name === 'Wsymb2').values[0];
+
+            const smhiSymbol = x.parameters.find(val => val.name === 'Wsymb2').values[0];
+            if (smhiSymbol !== null && smhiSymbol !== undefined) {
+                instantaniouslyTime.weatherSymbol = SMHI_TO_YR_SYMB_MAPPING[smhiSymbol];
+            } else {
+                instantaniouslyTime.weatherSymbol = 0;
+            }
 
             for (let jsonParameterName in mappingTimeParametersToTimeSerieProp) {
                 let timeSerieProp = mappingTimeParametersToTimeSerieProp[jsonParameterName];
@@ -78,7 +114,7 @@ const parseResponseJSON = (json) => {
             forecast.timeSerie.push(time);
             prevParsedTimeSerie = time;
         }
-
+        forecast.sourceName = 'SMHI';
         return forecast;
     } else {
         throw Error('Missing data in SMHI JSON');

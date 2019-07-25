@@ -3,6 +3,8 @@ import ReduxThunk from 'redux-thunk'
 import { rootReducer } from './reducers';
 import { loadState, saveState } from './../localStorage';
 
+const STATE_PROPS_TO_STORE = ['lat', 'lon', 'city', 'smhiForecast', 'yrForecast', 'activeForecast'];
+
 const configureStore = () => {
     const persistedState = loadState();
     console.log(persistedState);
@@ -13,9 +15,15 @@ const configureStore = () => {
     );
 
     store.subscribe(() => {
-        console.log('saving state');
-        const { lat, lon, city, smhiForecast, yrForecast } = store.getState();
-        saveState({ lat, lon, city, smhiForecast, yrForecast });
+        const state = store.getState();
+        let storable = {};
+        for (let idx in STATE_PROPS_TO_STORE) {
+            let propKey = STATE_PROPS_TO_STORE[idx];
+            storable[propKey] = state[propKey];
+        }
+        //console.log('Saving state:');
+        //console.log(storable);
+        saveState(storable);
     });
 
     return store;

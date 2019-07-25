@@ -162,7 +162,7 @@ const parseResponseXML = (txt) => {
             const symbol = xmlTimeSerie.getElementsByTagName('symbol') ? xmlTimeSerie.getElementsByTagName('symbol')[0] : null;
             if (symbol && symbol.getAttribute('number')) {
                 const yrNumber = parseInt(symbol.getAttribute('number'));
-                timeSerie.weatherSymbol = YR_TO_SMHI_SYMB_MAPPING[yrNumber] ? YR_TO_SMHI_SYMB_MAPPING[yrNumber] : 0;
+                timeSerie.weatherSymbol = yrNumber;
 
                 if (timeSerie.weatherSymbol === 0) {
                     console.log('Missing mapping for YR-symbol: ' + yrNumber);
@@ -173,7 +173,7 @@ const parseResponseXML = (txt) => {
         }
         forecast.timeSerie.push(timeSerie);
     }
-
+    forecast.sourceName = 'YR';
     return forecast;
 };
 

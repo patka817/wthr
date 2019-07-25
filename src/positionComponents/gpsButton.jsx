@@ -1,17 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { IconButton } from '@material-ui/core';
+import { MyLocation } from '@material-ui/icons';
 import { getGPSPosition } from '../state/actions'
 
 class GPSButtonPresentational extends React.Component {
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
-    }
-
-    componentWillReceiveProps(newProps, oldProps) {
-        if (this.props.fetchingPos === true && newProps.fetchingPos === false && newProps.errorMessage) {
-            alert(newProps.errorMessage);
-        }
     }
 
     onClick() {
@@ -22,18 +18,16 @@ class GPSButtonPresentational extends React.Component {
     }
 
     render() {
+        // {this.props.fetchingPos ? 'Locating...' : 'Get weather based on current position'}
         return (
-            <div>
-                <button className='gps-button' onClick={this.onClick}>{ this.props.fetchingPos ? 'Locating...' : 'Get weather based on current position' }</button>
-            </div>
+            <IconButton onClick={this.onClick}><MyLocation /></IconButton>
         );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        fetchingPos: state.fetchingPosition,
-        errorMessage: state.errorMessage
+        fetchingPos: state.fetchingPosition
     };
 };
 

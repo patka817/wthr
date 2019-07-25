@@ -1,27 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchData } from './../state/actions';
+import { IconButton } from '@material-ui/core';
+import { Loop } from '@material-ui/icons';
 
 class ReloadDataButtonPresentational extends React.Component {
     constructor(props) {
         super(props);
-
         this.onClick = this.onClick.bind(this);
     }
 
     onClick() {
-        if (this.props.loading || this.props.locatingGPS) {
+        if (this.props.loading || this.props.locatingGPS) {
             return;
         }
         this.props.onClick();
     }
 
     render() {
-        let className = this.props.loading ? 'reload-data-button-loading' : 'reload-data-button';
+
+        let className = this.props.loading ? 'rotate' : '';
         return (
-            <div>
-                <button className={className} disabled={this.props.locatingGPS} onClick={this.onClick}>Reload</button>
-            </div>
+            <IconButton disabled={this.props.locatingGPS} onClick={this.onClick} color={this.props.color}><Loop className={className} /></IconButton>
         );
     }
 }

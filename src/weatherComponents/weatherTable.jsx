@@ -98,7 +98,7 @@ class WeatherTablePresentational extends React.Component {
                     <p>Forecast issued {this.activeForecast().approvedTime.toLocaleString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long' })}</p>
                 </Typography>
             </div>
-            <Dialog open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
+            <Dialog fullScreen={ window.innerWidth < 500 ? true : false } open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
                 <DialogTitle>
                     { this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : null}
                 </DialogTitle>

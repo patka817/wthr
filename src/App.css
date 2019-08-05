@@ -19,6 +19,24 @@
   text-align: left;
 }
 
+.snackbar-error {
+  background-color: red;
+}
+
+.transparent-button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    padding: 0;
+}
+
+.transparent-button:focus {
+  border: none;
+}
+
 /* Forecast tggle */
 
 #toggle-forecast-group {
@@ -45,9 +63,9 @@
 
 .day-weather-row {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 1fr) 10px;
   grid-template-areas:
-    "date date date night morning afternoon evening minmax prec wind";
+    "date date date night morning afternoon evening minmax prec wind chevron";
   justify-content: stretch;
   align-items: center;
   justify-items: center;
@@ -91,52 +109,45 @@
    grid-area: wind;
 }
 
-/* HOURLY FORECAST CARD */
-
-.hourlyWeatherCard {
-  margin: 0.5rem 0;
-  display: grid;
-  grid-template-columns: 20% auto;
-  grid-template-rows: 1fr;
-  grid-template-areas: 'hour forecastrows';
+.day-weather-row-chevron {
+  grid-area: chevron;
 }
+
+/* HOURLY FORECAST CARD */
 
 .hourlyForecastRow {
   display: grid;
   margin: 0.5rem 0;
   grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: minmax(20px, auto);
+  /*grid-auto-rows: minmax(20px, auto);*/
   grid-template-areas:
-  'forecast temp symbol wind precipitation';
+  'hour temp symbol wind precipitation';
+  border-bottom: 1px solid lightgray;
 }
 
 .hour-container {
   align-self: center;
-  grid-area: 'hour';
-}
-
-.forecast-row-container {
-    grid-area: 'forecastrows';
-}
-
-.forecastrow-sourcename-container {
-  grid-area: 'forecast';
+  grid-area: hour;
 }
 
 .forecastrow-temp-container {
-  grid-area: 'temp';
+  align-self: center;
+  grid-area: temp;
 }
 
 .forecastrow-symbol-container {
-  grid-area: 'symbol';
+  align-self: center;
+  grid-area: symbol;
 }
 
 .forecastrow-wind-container {
-  grid-area: 'wind';
+  align-self: center;
+  grid-area: wind;
 }
 
 .forecastrow-precipitation-container {
-  grid-area: 'precipitation';
+  align-self: center;
+  grid-area: precipitation;
 }
 
 .day-weather-row-header {

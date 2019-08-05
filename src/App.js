@@ -7,10 +7,22 @@ import { fetchData } from './state/actions'
 import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
+import { Snackbar } from '@material-ui/core';
 
 const THREE_HOURS = 1000 * 60 * 60 * 24 * 3;
 
 class AppPresentational extends React.Component {
+  constructor(props) {
+    super(props);
+    this.closeSnackbar = this.closeSnackbar.bind(this);
+    this.state = { 
+      showError: false 
+    };
+  }
+
+  closeSnackbar(event, reason) {
+    this.setState({ showError: false })
+  }
 
   componentDidMount() {
     const now = new Date();
@@ -31,15 +43,19 @@ class AppPresentational extends React.Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if (this.props.error !== newProps.error && newProps.error) {
+        this.setState({ showError: true })
+    }
+  }
+
   render() {
     return (
         <div className='App'>
           <AppBar />
           <ForecastToggle />
-          {/* What if we get an error or don't have data? error -> show has 'toast', no data -> no weather table.. */}
           <WeatherTable />
-          {/* Show as a modal or toast or whatever */}
-          { this.props.errorMessage && <p>{this.props.errorMessage}</p>}
+          <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
         </div>
     );
   }
@@ -49,7 +65,7 @@ const mapStateToProps = (state) => {
   return {
     yrApprovedTime: state.yrForecast ? state.yrForecast.approvedTime : null,
     smhiApprovedTime: state.smhiForecast ? state.smhiForecast.approvedTime : null,
-    errorMessage: state.errorMessage
+    error: state.error
   };
 };
 

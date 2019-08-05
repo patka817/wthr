@@ -12,7 +12,7 @@ export const initialState = {
     yrForecast: null,
     activeForecast: SMHI_FORECAST,
     loading: false,
-    errorMessage: null
+    error: null
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -20,14 +20,18 @@ export const rootReducer = (state = initialState, action) => {
         case Actions.LOADING:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                error: null,
             }
 
         case Actions.ERROR_LOADING:
             return {
                 ...state,
                 loading: false,
-                errorMessage: action.message
+                error: {
+                    message: action.message,
+                    timestamp: (new Date()).getTime()
+                }
             }
 
         case Actions.FETCH_SUCCESS:
@@ -36,21 +40,21 @@ export const rootReducer = (state = initialState, action) => {
                 smhiForecast: action.smhi,
                 yrForecast: action.yr,
                 loading: false,
-                errorMessage: null,
+                error: null,
             }
 
         case Actions.LOADING_GPS_POS:
             return {
                 ...state,
                 fetchingPosition: true,
-                errorMessage: null
+                error: null
             }
 
         case Actions.GOT_GPS_POS:
             return {
                 ...state,
                 fetchingPosition: false,
-                errorMessage: null,
+                error: null,
                 lat: action.lat,
                 lon: action.lon
             }
@@ -59,7 +63,10 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetchingPosition: false,
-                errorMessage: action.message
+                error: {
+                    message: action.message,
+                    timestamp: (new Date()).getTime()
+                }
             }
 
         case Actions.NEW_GPS_CITY_NAME:

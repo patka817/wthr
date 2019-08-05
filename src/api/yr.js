@@ -1,5 +1,6 @@
 import { fetchAndExtractText } from './util';
 import { Time, Forecast } from '../timeSerie';
+import { round } from 'lodash';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
@@ -145,7 +146,10 @@ const parseResponseXML = (txt) => {
             // Get precipitation
             const prec = xmlTimeSerie.getElementsByTagName('precipitation')[0];
             if (prec) {
-                timeSerie.meanPrecipitation.value = prec.getAttribute('value');
+                const totPrec = prec.getAttribute('value');
+                const timeLength = timeSerie.timeLength();
+                const meanPrecipitation = totPrec > 0 ? round(totPrec/timeLength, 1) : 0;
+                timeSerie.meanPrecipitation.value = meanPrecipitation;
                 timeSerie.meanPrecipitation.unit = 'mm/h';
             }
 

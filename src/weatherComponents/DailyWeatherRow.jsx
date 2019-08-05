@@ -1,5 +1,7 @@
 import React from 'react';
 import { Paper, Typography } from '@material-ui/core';
+import { ChevronRight } from '@material-ui/icons';
+import * as Hourly from './HourlyWeatherRow';
 
 export const DailyHeaderRow = (props) => {
     return (
@@ -15,23 +17,41 @@ export const DailyHeaderRow = (props) => {
     );
 }
 
+export const dailyDateTitle = (date) => {
+    const now = new Date();
+    const tomorrow = addDays(now, 1);
+    let prefix = null;
+    if (sameDayDates(date, now)) {
+        prefix = 'Today';
+    } else if (sameDayDates(tomorrow, date)) {
+        prefix = 'Tomorrow';
+    } else {
+        prefix = `${date.toLocaleString(navigator.language, { weekday: 'long' })}`;
+    }
+    const dateString = `${prefix} , ${date.toLocaleString(navigator.language, { month: 'long', day: 'numeric' })}`;
+    return dateString;
+};
+
 export const DailyWeatherRow = (props) => {
-    // All time's must have the same startTime..
     let date = props.viewModel.date;
-    const dateString = `${date.toLocaleString('en-us', { weekday: 'long' })} , ${date.toLocaleString('en-us', { month: 'long', day: 'numeric' })}`;
+    const dateString = dailyDateTitle(date);
+    // TODO: extract template
     const WICON_TEMPLATE = 'https://api.met.no/weatherapi/weathericon/1.1/?symbol={WSYMB}&is_night={NIGHT}&content_type=image/png';
 
     return (
-        <Paper className="day-weather-row">
-            <Typography className='day-weather-row-date' variant='body1'>{dateString}</Typography>
-            {props.viewModel.nightSymbol !== undefined && props.viewModel.nightSymbol !== 0 ? <img className="day-weather-row-night-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.nightSymbol).replace('{NIGHT}', 1)} alt='icon of current weather in the night' /> : null}
-            {props.viewModel.morningSymbol !== undefined && props.viewModel.morningSymbol !== 0 ? <img className="day-weather-row-morning-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.morningSymbol).replace('{NIGHT}', 0)} alt='icon of current weather in the morning' /> : null}
-            {props.viewModel.afternoonSymbol !== undefined && props.viewModel.afternoonSymbol !== 0 ? <img className="day-weather-row-afternoon-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.afternoonSymbol).replace('{NIGHT}', 0)} alt='icon of current weather in the afternoon' /> : null}
-            {props.viewModel.eveningSymbol !== undefined && props.viewModel.eveningSymbol !== 0 ? <img className="day-weather-row-evening-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.eveningSymbol).replace('{NIGHT}', 0)} alt='icon of current weather in the evening' /> : null}
-            <Typography className='day-weather-row-minmax' variant='body1'>{`${props.viewModel.minTemp}°/${props.viewModel.maxTemp}°`}</Typography>
-            <Typography className='day-weather-row-prec' variant='body1'>{props.viewModel.precipitation !== undefined ? props.viewModel.precipitation : '-'}</Typography>
-            <Typography className='day-weather-row-wind' variant='body1'>{`${props.viewModel.maxWind}`}</Typography>
-        </Paper>
+        <button className='transparent-button' onClick={props.onClick}>
+            <Paper className="day-weather-row">
+                <Typography className='day-weather-row-date' variant='body1'>{dateString}</Typography>
+                {props.viewModel.nightSymbol !== undefined && props.viewModel.nightSymbol !== 0 ? <img className="day-weather-row-night-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.nightSymbol).replace('{NIGHT}', 1)} alt='icon of current weather in the night' /> : null}
+                {props.viewModel.morningSymbol !== undefined && props.viewModel.morningSymbol !== 0 ? <img className="day-weather-row-morning-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.morningSymbol).replace('{NIGHT}', 0)} alt='icon of current weather in the morning' /> : null}
+                {props.viewModel.afternoonSymbol !== undefined && props.viewModel.afternoonSymbol !== 0 ? <img className="day-weather-row-afternoon-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.afternoonSymbol).replace('{NIGHT}', 0)} alt='icon of current weather in the afternoon' /> : null}
+                {props.viewModel.eveningSymbol !== undefined && props.viewModel.eveningSymbol !== 0 ? <img className="day-weather-row-evening-icon" src={WICON_TEMPLATE.replace('{WSYMB}', props.viewModel.eveningSymbol).replace('{NIGHT}', 0)} alt='icon of current weather in the evening' /> : null}
+                <Typography className='day-weather-row-minmax' variant='body1'>{`${props.viewModel.minTemp}°/${props.viewModel.maxTemp}°`}</Typography>
+                <Typography className='day-weather-row-prec' variant='body1'>{props.viewModel.precipitation !== undefined ? props.viewModel.precipitation : '-'}</Typography>
+                <Typography className='day-weather-row-wind' variant='body1'>{`${props.viewModel.maxWind}`}</Typography>
+                <ChevronRight className='day-weather-row-chevron' />
+            </Paper>
+        </button>
     );
 };
 
@@ -57,8 +77,9 @@ export const createDailyViewModels = (forecast) => {
     const today = Date();
     for (let i = 0; i < FORECAST_LIMIT; i++) {
         let date = addDays(today, i);
-        let filtered = filterByDay(date, forecast.timeSerie);
+        let filtered = forecast.timeserieFilteredByDay(date);
         console.log('handling date: ' + date);
+        console.log(filtered);
         //const before = filtered.length;
         //console.log('before: ' + before);
         filtered = removePassedTime(filtered);
@@ -240,7 +261,7 @@ const calculatePrecipitation = (soughtDayDate, arrayOfTimes) => {
             const hour = cTime.getHours();
             if (cTime.getTime() - now.getTime() < 0) {
                 cTime = new Date(cTime.getTime() + ONE_HOUR);
-                continue;   
+                continue;
             }
 
             if ((hour in timeCover) && timeCover[hour].timeLength >= timeLength) {
@@ -267,9 +288,9 @@ const calculatePrecipitation = (soughtDayDate, arrayOfTimes) => {
             times.push(time);
         }
     }
-    
+
     const result = times.reduce((accVal, el) => {
-        return el.meanPrecipitation && el.meanPrecipitation.value ? parseFloat(el.meanPrecipitation.value) + accVal : accVal;
+        return el.meanPrecipitation && el.meanPrecipitation.value && el.timeLength() ? parseFloat(el.meanPrecipitation.value) * parseFloat(el.timeLength()) + accVal : accVal;
     }, 0);
     return result;
 };
@@ -309,20 +330,6 @@ const findMinMaxInstantValues = (instantKeys, arrayOfTimes) => {
 
     //console.log('Min/max values: ');
     //console.log(res);
-    return res;
-};
-
-// Data filtering
-
-const filterByDay = (soughtDayDate, arrayOfTimes) => {
-    let res = [];
-    for (let timeIndex in arrayOfTimes) {
-        const time = arrayOfTimes[timeIndex];
-        if (sameDayDates(soughtDayDate, time.startTime) ||
-            sameDayDates(soughtDayDate, time.endTime)) {
-            res.push(time);
-        }
-    }
     return res;
 };
 

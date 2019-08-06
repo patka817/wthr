@@ -35,10 +35,11 @@ export const HourlyForecastRow = (props) => {
 // TODO: Refactor
 const HOURS_IN_A_DAY = 24;
 export const createHourlyViewModels = (forecast, dayDate) => {
+    const startHour = sameDayDates(new Date(), dayDate) ? (new Date()).getHours() : 0;
     let dayTimes = forecast.timeserieFilteredByDay(dayDate);
     const source = forecast.sourceName;
     let models = [];
-    for (let hour = 0; hour < HOURS_IN_A_DAY; hour++) {
+    for (let hour = startHour; hour < HOURS_IN_A_DAY; hour++) {
         let viewModel = convertTimeSerieToHourlyViewModel(dayDate.getFullYear(), dayDate.getMonth(), dayDate.getDate(), hour, dayTimes);
         if (viewModel) {
             viewModel.source = source;
@@ -46,6 +47,21 @@ export const createHourlyViewModels = (forecast, dayDate) => {
         }
     }
     return models;
+};
+
+const currentHour = () => {
+    return (new Date()).getHours();
+}
+
+const sameDayDates = (date1, date2) => {
+    if (date1.getDate() !== date2.getDate()) {
+        return false;
+    } else if (date1.getMonth() !== date2.getMonth()) {
+        return false;
+    } else if (date1.getFullYear() !== date2.getFullYear()) {
+        return false;
+    }
+    return true;
 };
 
 const convertTimeSerieToHourlyViewModel = (year, month, dayInMonth, hourInDay, timeSerie) => {

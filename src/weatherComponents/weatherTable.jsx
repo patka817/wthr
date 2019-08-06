@@ -94,13 +94,13 @@ class WeatherTablePresentational extends React.Component {
             <>
             <div className='weathertable'>
                 {listitems ? listitems : <p>Missing items</p>}
-                <Typography variant='body1'>
-                    <p>Forecast issued {this.activeForecast().approvedTime.toLocaleString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long' })}</p>
+                <Typography variant='body2'>
+                    Forecast issued {this.activeForecast().approvedTime.toLocaleString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long' })}
                 </Typography>
             </div>
             <Dialog fullScreen={ window.innerWidth < 500 ? true : false } open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
                 <DialogTitle>
-                    { this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : null}
+                    { this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
                 </DialogTitle>
                 <DialogContent>
                 {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}

@@ -103,8 +103,6 @@ export class Forecast {
             if (sameDayDates(soughtDayDate, time.startTime) ||
                 sameDayDates(soughtDayDate, time.endTime)) {
                 res.push(time);
-            } else {
-                console.log('Not same date (sought | time.start): ' + soughtDayDate + ' | ' + time.startTime);
             }
         }
         return res;

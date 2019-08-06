@@ -93,11 +93,11 @@ class WeatherTablePresentational extends React.Component {
         return (
             <>
                 <div className='weathertable'>
-                    <Footer approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
+                    <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
                 </div>
                 <Dialog fullScreen={window.innerWidth < 500 ? true : false} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
-                    <DialogTitle>
+                    <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
                         {this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
                     </DialogTitle>
                     <DialogContent>
@@ -112,7 +112,7 @@ class WeatherTablePresentational extends React.Component {
     }
 }
 
-const Footer = (props) => {
+const Issued = (props) => {
     if (props.approvedTime) {
         return (
             <Typography  variant='body2'>

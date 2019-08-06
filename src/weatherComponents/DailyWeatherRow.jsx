@@ -29,7 +29,7 @@ export const dailyDateTitle = (date) => {
     } else {
         prefix = `${date.toLocaleString(navigator.language, { weekday: 'long' })}`;
     }
-    const dateString = `${prefix} , ${date.toLocaleString(navigator.language, { month: 'long', day: 'numeric' })}`;
+    const dateString = `${prefix}, ${date.toLocaleString(navigator.language, { month: 'long', day: 'numeric' })}`;
     return dateString;
 };
 

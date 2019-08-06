@@ -44,7 +44,7 @@ class WeatherTablePresentational extends React.Component {
         } else if (this.props.activeForecast === YR_FORECAST && this.yrViewModels) {
             viewModels = this.yrViewModels;
         }
-        let res = viewModels.map(el => <Daily.DailyWeatherRow key={el.date} viewModel={el} onClick={() => { this.showHourView(el.date)}} />);
+        let res = viewModels.map(el => <Daily.DailyWeatherRow key={el.date} viewModel={el} onClick={() => { this.showHourView(el.date) }} />);
         if (res.length > 0) {
             res.unshift([<Daily.DailyHeaderRow key='headerrow' />]);
         }
@@ -89,30 +89,40 @@ class WeatherTablePresentational extends React.Component {
     render() {
         const listitems = this.listifyData();
         let hourViewModels = this.hourlyViewModels();
-        
+
         return (
             <>
-            <div className='weathertable'>
-                {listitems ? listitems : <p>Missing items</p>}
-                <Typography variant='body2'>
-                    Forecast issued {this.activeForecast().approvedTime.toLocaleString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long' })}
-                </Typography>
-            </div>
-            <Dialog fullScreen={ window.innerWidth < 500 ? true : false } open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
-                <DialogTitle>
-                    { this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
-                </DialogTitle>
-                <DialogContent>
-                {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.closeHourView}>Close</Button>
-                </DialogActions>
-            </Dialog>
+                <div className='weathertable'>
+                    <Footer approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
+                    {listitems ? listitems : <p>Missing items</p>}
+                </div>
+                <Dialog fullScreen={window.innerWidth < 500 ? true : false} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
+                    <DialogTitle>
+                        {this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
+                    </DialogTitle>
+                    <DialogContent>
+                        {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button fullWidth variant='contained' onClick={this.closeHourView}>Close</Button>
+                    </DialogActions>
+                </Dialog>
             </>
         );
     }
 }
+
+const Footer = (props) => {
+    if (props.approvedTime) {
+        return (
+            <Typography  variant='body2'>
+                Forecast issued {props.approvedTime.toLocaleString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long' })}
+            </Typography>
+        );
+    } else {
+        return null;
+    }
+};
 
 const mapStateToProps = (state) => {
     return {

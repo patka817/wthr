@@ -21,9 +21,8 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    
+    flexShrink: 1,
     gridArea: 'title',
-    minWidth: '50%',
     margin: 'auto'
   },
 }));

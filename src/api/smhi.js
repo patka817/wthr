@@ -1,4 +1,5 @@
-import { truncate, fetchAndExtractJSON } from './util';
+import { round } from 'lodash';
+import { fetchAndExtractJSON } from './util';
 import { Forecast, Time } from './../timeSerie';
 
 const PLACEHOLDER_LAT = '{latitude}';
@@ -123,8 +124,8 @@ const parseResponseJSON = (json) => {
 
 const fetchSMHIData = (lat, lon) => {
     // truncate, SMHI don't like more than 6 decimals..
-    lat = truncate(lat, 6);
-    lon = truncate(lon, 6);
+    lat = round(lat, 6);
+    lon = round(lon, 6);
 
     return fetchAndExtractJSON(SMHI_API.replace(PLACEHOLDER_LAT, lat).replace(PLACEHOLDER_LON, lon)).then(json => parseResponseJSON(json));
 };

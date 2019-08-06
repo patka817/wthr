@@ -11,8 +11,3 @@ export const fetchAndExtractText = (url, options = { method: 'GET' }) => {
             return res.text().then(txt => res.ok ? txt : Promise.reject(txt));
         });
 };
-
-export const truncate = (decimal, n = 2) => {
-    let x = decimal + ''; // string 
-    return x.lastIndexOf('.') >= 0 ? parseFloat(x.substr(0, x.lastIndexOf('.') + (n + 1))) : decimal; // You can use indexOf() instead of lastIndexOf()
-};

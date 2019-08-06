@@ -10,22 +10,23 @@ export const HourlyForecastRow = (props) => {
     if (typeof (startTime) === 'string') {
         startTime = new Date(startTime);
     }
-    
+
+    const variant = 'body1';    
     return (
         <div className='hourlyForecastRow'>
-            <Typography className='hour-container' variant='h5'>
-                kl. {startTime.toLocaleString(navigator.language, { hour: '2-digit', hour12: false })}
+            <Typography className='hour-container' variant={variant}>
+                {startTime.toLocaleString(navigator.language, { hour: '2-digit', hour12: false })}
             </Typography>
-            <Typography className='forecastrow-temp-container' variant='h5'>
+            <Typography className='forecastrow-temp-container' variant={variant}>
                 {viewModel ? `${viewModel.temp}°` : '-'}
             </Typography>
-            <Typography className='forecastrow-symbol-container' variant='h5'>
+            <Typography className='forecastrow-symbol-container' variant={variant}>
                 {viewModel ? <img src={WICON_TEMPLATE.replace('{WSYMB}', viewModel.weatherSymbol).replace('{NIGHT}', isNight)} alt='weathericon' /> : '-'}
             </Typography>
-            <Typography className='forecastrow-wind-container' variant='h5'>
+            <Typography className='forecastrow-wind-container' variant={variant}>
                 {viewModel ? `${viewModel.windspeed} (${viewModel.gust}) m/s` : '-'}
             </Typography>
-            <Typography className='forecastrow-precipitation-container' variant='h5'>
+            <Typography className='forecastrow-precipitation-container' variant={variant}>
                 {viewModel ? `${viewModel.precipitation} mm/h` : '-'}
             </Typography>
         </div>
@@ -49,10 +50,6 @@ export const createHourlyViewModels = (forecast, dayDate) => {
     return models;
 };
 
-const currentHour = () => {
-    return (new Date()).getHours();
-}
-
 const sameDayDates = (date1, date2) => {
     if (date1.getDate() !== date2.getDate()) {
         return false;
@@ -71,7 +68,7 @@ const convertTimeSerieToHourlyViewModel = (year, month, dayInMonth, hourInDay, t
     // Instant for instant values, e.g. temp 
     // mean-values (precipitation) for the upcoming hour (e.g. the time must start this hour)
     const soughtDate = new Date(year, month, dayInMonth, hourInDay);
-    const hourTimes = removePassedTime(timeSerie.filter(x => validHourlyTime(soughtDate, x)));
+    const hourTimes = timeSerie.filter(x => validHourlyTime(soughtDate, x));
     console.log('hourtimes:');
     console.log(hourTimes);
     if (hourTimes.length === 0) {
@@ -110,19 +107,6 @@ const validHourlyTime = (soughtDate, time) => {
         return false;
     }
     return true;
-};
-
-const ONE_HOUR = 1000 * 60 * 60;
-const removePassedTime = (arrayOfTimes) => {
-    const nowTime = new Date().getTime();
-
-    return arrayOfTimes.filter(el => {
-        if (el.isInstant() && Math.abs(el.startTime.getTime() - nowTime) < ONE_HOUR) {
-            return true;
-        }
-        const elTime = el.endTime.getTime();
-        return (nowTime - elTime) < 0;
-    });
 };
 
 const firstInstantTime = (timeSerie) => {

@@ -9,7 +9,7 @@ import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
 import { Snackbar } from '@material-ui/core';
 
-const THREE_HOURS = 1000 * 60 * 60 * 24 * 3;
+const THREE_HOURS = 1000 * 60 * 60 * 3;
 
 class AppPresentational extends React.Component {
   constructor(props) {
@@ -27,8 +27,6 @@ class AppPresentational extends React.Component {
   componentDidMount() {
     const now = new Date();
     const timesToCheck = [this.props.yrApprovedTime, this.props.smhiApprovedTime];
-    console.log('times to check:');
-    console.log(timesToCheck);
     const found = timesToCheck.find(x => {
       if (x !== null && (now.getTime() - x.getTime()) > THREE_HOURS) {
         return true;

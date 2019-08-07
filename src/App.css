@@ -1,6 +1,13 @@
+html {
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
 .App {
   text-align: center;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 /* AppBar */
@@ -53,6 +60,7 @@
   background-color: lightgray;
   color: black;
 }
+
 /* Weather */
 
 .weathertable {

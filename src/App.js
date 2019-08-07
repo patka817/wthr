@@ -15,8 +15,8 @@ class AppPresentational extends React.Component {
   constructor(props) {
     super(props);
     this.closeSnackbar = this.closeSnackbar.bind(this);
-    this.state = { 
-      showError: false 
+    this.state = {
+      showError: false
     };
   }
 
@@ -25,25 +25,18 @@ class AppPresentational extends React.Component {
   }
 
   componentDidMount() {
-    const now = new Date();
-    const timesToCheck = [this.props.yrApprovedTime, this.props.smhiApprovedTime];
-    const found = timesToCheck.find(x => {
-      if (x !== null && (now.getTime() - x.getTime()) > THREE_HOURS) {
-        return true;
+    if (this.props.hasLocation) {
+      const now = new Date();
+      if (!this.props.lastUpdate || now.getTime() - this.props.lastUpdate.getTime() > THREE_HOURS) {
+        console.log('found stale data');
+        this.props.fetchData();
       }
-      return false;
-    });
-    
-    if (found !== undefined) {
-      console.log('found stale data');
-      console.log(found);
-      this.props.fetchData();
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (this.props.error !== newProps.error && newProps.error) {
-        this.setState({ showError: true })
+      this.setState({ showError: true })
     }
   }
 
@@ -52,11 +45,11 @@ class AppPresentational extends React.Component {
     const forecastComps = this.props.hasForecast ? [<ForecastToggle key='toggle' />
       , <WeatherTable key='weathertable' />] : null;
     return (
-        <div className='App'>
-          <AppBar />
-          { forecastComps }
-          <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
-        </div>
+      <div className='App'>
+        <AppBar />
+        {forecastComps}
+        <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
+      </div>
     );
   }
 }
@@ -66,7 +59,9 @@ const mapStateToProps = (state) => {
     hasForecast: (state.yrForecast || state.smhiForecast),
     yrApprovedTime: state.yrForecast ? state.yrForecast.approvedTime : null,
     smhiApprovedTime: state.smhiForecast ? state.smhiForecast.approvedTime : null,
-    error: state.error
+    error: state.error,
+    lastUpdate: state.lastUpdate,
+    hasLocation: state.lat && state.lon
   };
 };
 

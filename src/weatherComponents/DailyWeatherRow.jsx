@@ -100,8 +100,8 @@ export const createDailyViewModels = (forecast) => {
         res.push({
             date: date,
             precipitation: precip > 0 ? precip.toFixed(1) : '',
-            minTemp: minmaxValues['temp'] ? minmaxValues['temp'].min : '-',
-            maxTemp: minmaxValues['temp'] ? minmaxValues['temp'].max : '-',
+            minTemp: minmaxValues['temp'] ? Math.round(minmaxValues['temp'].min) : '-',
+            maxTemp: minmaxValues['temp'] ? Math.round(minmaxValues['temp'].max) : '-',
             minWind: minmaxValues['windSpeed'] ? minmaxValues['windSpeed'].min.toFixed(1) : '-',
             maxWind: minmaxValues['windSpeed'] ? minmaxValues['windSpeed'].max.toFixed(1) : '-',
             ...daySymbols

@@ -3,7 +3,7 @@ import ReduxThunk from 'redux-thunk'
 import { rootReducer } from './reducers';
 import { loadState, saveState } from './../localStorage';
 
-const STATE_PROPS_TO_STORE = ['lat', 'lon', 'city', 'smhiForecast', 'yrForecast', 'activeForecast'];
+const STATE_PROPS_TO_STORE = ['lat', 'lon', 'city', 'smhiForecast', 'yrForecast', 'activeForecast', 'lastUpdate'];
 
 const configureStore = () => {
     const persistedState = loadState();

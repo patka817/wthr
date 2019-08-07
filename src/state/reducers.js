@@ -10,6 +10,7 @@ export const initialState = {
     fetchingPosition: false,
     smhiForecast: null,
     yrForecast: null,
+    lastUpdate: null,
     activeForecast: SMHI_FORECAST,
     loading: false,
     error: null
@@ -39,6 +40,7 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 smhiForecast: action.smhi,
                 yrForecast: action.yr,
+                lastUpdate: new Date(),
                 loading: false,
                 error: null,
             }

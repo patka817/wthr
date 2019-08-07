@@ -1,6 +1,6 @@
 import { Forecast, Time } from "./timeSerie";
 
-const DATE_KEYS = ['endTime', 'startTime', 'approvedTime'];
+const DATE_KEYS = ['endTime', 'startTime', 'approvedTime', 'lastUpdate'];
 const FORECAST_KEYS = ['yrForecast', 'smhiForecast'];
 const TIMESERIES_KEYS = ['timeSerie'];
 

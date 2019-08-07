@@ -89,6 +89,7 @@ class WeatherTablePresentational extends React.Component {
     render() {
         const listitems = this.listifyData();
         let hourViewModels = this.hourlyViewModels();
+        const fullScreen = showFullscreenDialog();
 
         return (
             <>
@@ -96,7 +97,7 @@ class WeatherTablePresentational extends React.Component {
                     <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
                 </div>
-                <Dialog fullScreen={window.innerWidth < 500 ? true : false} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
+                <Dialog fullScreen={fullScreen} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
                     <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
                         {this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
                     </DialogTitle>
@@ -111,6 +112,15 @@ class WeatherTablePresentational extends React.Component {
         );
     }
 }
+
+const showFullscreenDialog = () => {
+    if (window.innerWidth < 500) {
+        return true;
+    } else if (window.innerHeight < 500) {
+        return true;
+    }
+    return false;
+};
 
 const Issued = (props) => {
     if (props.approvedTime) {

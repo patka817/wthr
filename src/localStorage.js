@@ -11,7 +11,7 @@ export const loadState = () => {
             return undefined;
         }
         let state = JSON.parse(serializedState, (name, value) => {
-            if (FORECAST_KEYS.indexOf(name) !== -1) {
+            if (FORECAST_KEYS.indexOf(name) !== -1 && value) {
                 return new Forecast(value);
             } else if (TIMESERIES_KEYS.indexOf(name) !== -1) {
                 return value.map(x => new Time(x));

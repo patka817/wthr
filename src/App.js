@@ -50,6 +50,7 @@ class AppPresentational extends React.Component {
   }
 
   render() {
+    // TODO: show some info when we haven't got any forecast
     const forecastComps = this.props.hasForecast ? [<ForecastToggle key='toggle' />
       , <WeatherTable key='weathertable' />] : null;
     return (

@@ -111,6 +111,7 @@ const fetchDataExecutor = (dispatch, getState, lat, lon) => {
         return;
     }
 
+    // We use timeout only to get a nice animation if the user got fast internet ... And yes, it should probably be in the UI comp..
     setTimeout(() => {
         Promise.all([
             fetchSMHIData(lat, lon),

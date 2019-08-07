@@ -7,6 +7,8 @@ import { SMHI_FORECAST, YR_FORECAST } from '../state/reducers';
 
 const ForecastToggle = (props) => {
     const currentForecast = useSelector(state => state.activeForecast);
+    const hasSMHI = useSelector(state => !!state.smhiForecast);
+    const hasYR = useSelector(state => !!state.yrForecast);
     const dispatch = useDispatch();
     const changeForecast = useCallback(
         () => dispatch(toggleForecast()),
@@ -17,8 +19,8 @@ const ForecastToggle = (props) => {
 
     return (
         <ButtonGroup id='toggle-forecast-group'>
-            <Button onClick={changeForecast} disabled={ smhiIsActive } >SMHI</Button>
-            <Button onClick={changeForecast} disabled={ yrActive }>YR</Button>
+            {hasSMHI ? <Button onClick={changeForecast} disabled={ smhiIsActive } >SMHI</Button> : null }
+            { hasYR ? <Button onClick={changeForecast} disabled={ yrActive }>YR</Button> : null }
         </ButtonGroup>
     );
 };

@@ -50,11 +50,12 @@ class AppPresentational extends React.Component {
   }
 
   render() {
+    const forecastComps = this.props.hasForecast ? [<ForecastToggle key='toggle' />
+      , <WeatherTable key='weathertable' />] : null;
     return (
         <div className='App'>
           <AppBar />
-          <ForecastToggle />
-          <WeatherTable />
+          { forecastComps }
           <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
         </div>
     );
@@ -63,6 +64,7 @@ class AppPresentational extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    hasForecast: (state.yrForecast || state.smhiForecast),
     yrApprovedTime: state.yrForecast ? state.yrForecast.approvedTime : null,
     smhiApprovedTime: state.smhiForecast ? state.smhiForecast.approvedTime : null,
     error: state.error

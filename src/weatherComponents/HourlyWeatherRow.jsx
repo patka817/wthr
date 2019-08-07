@@ -36,7 +36,7 @@ export const HourlyForecastRow = (props) => {
 // TODO: Refactor
 const HOURS_IN_A_DAY = 24;
 export const createHourlyViewModels = (forecast, dayDate) => {
-    const startHour = sameDayDates(new Date(), dayDate) ? (new Date()).getHours() : 0;
+    const startHour = sameDayDates(new Date(), dayDate) ? ((new Date()).getHours() +1 ) : 0; // +1 to get next, e.g. if it's 7.30 -> 8. YR shows null-values otherwise
     let dayTimes = forecast.timeserieFilteredByDay(dayDate);
     const source = forecast.sourceName;
     let models = [];

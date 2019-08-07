@@ -205,9 +205,33 @@ html {
   }
 
   .day-weather-row {
-    display: grid;
     grid-template-columns: repeat(9, 1fr) 10px;
     grid-template-areas:
       "date night morning afternoon evening low high prec wind chevron";
   }
-} 
+
+  .MuiTypography-body1 {
+    font-size: 0.75rem !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .day-weather-row {
+    grid-template-columns: 2fr 2fr 2fr 2fr repeat(4, 1fr) 10px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    'date date date date date date date date date'
+    'night morning afternoon evening low high prec wind chevron';
+  }
+
+  .day-weather-row-header {
+    grid-template-columns: 2fr 2fr 2fr 2fr repeat(4, 1fr) 10px;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+    'night morning afternoon evening low high prec wind chevron';
+  }
+
+  .day-weather-row-date {
+    align-self: start;
+  }
+}

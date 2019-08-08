@@ -25,6 +25,7 @@ export const rootReducer = (state = initialState, action) => {
                 loading: true,
                 yrForecast: null,
                 smhiForecast: null,
+                lastUpdate: null,
                 error: null,
             }
 

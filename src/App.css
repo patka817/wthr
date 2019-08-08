@@ -135,6 +135,14 @@ html {
   grid-area: chevron;
 }
 
+.red-color {
+  color: red;
+}
+
+.blue-color {
+  color: blue;
+}
+
 /* HOURLY FORECAST CARD */
 
 .hourlyForecastRow {
@@ -213,6 +221,10 @@ html {
   .MuiTypography-body1 {
     font-size: 0.75rem !important;
   }
+}
+
+.search-form {
+  max-width: 150px;
 }
 
 @media screen and (max-width: 500px) {

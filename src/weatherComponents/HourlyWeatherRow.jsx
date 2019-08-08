@@ -17,7 +17,7 @@ export const HourlyForecastRow = (props) => {
             <Typography className='hour-container' variant={variant}>
                 {startTime.toLocaleString(navigator.language, { hour: '2-digit', hour12: false })}
             </Typography>
-            <Typography className='forecastrow-temp-container' variant={variant}>
+            <Typography className='forecastrow-temp-container red-color' variant={variant}>
                 {viewModel ? `${viewModel.temp}°` : '-'}
             </Typography>
             <Typography className='forecastrow-symbol-container' variant={variant}>
@@ -27,7 +27,7 @@ export const HourlyForecastRow = (props) => {
                 {viewModel ? `${viewModel.windspeed} (${viewModel.gust}) m/s` : '-'}
             </Typography>
             <Typography className='forecastrow-precipitation-container' variant={variant}>
-                {viewModel ? `${viewModel.precipitation} mm/h` : '-'}
+                {viewModel ? <span><span className='blue-color'>{`${viewModel.precipitation}`}</span> mm/h</span> : '-'}
             </Typography>
         </div>
     );
@@ -69,8 +69,6 @@ const convertTimeSerieToHourlyViewModel = (year, month, dayInMonth, hourInDay, t
     // mean-values (precipitation) for the upcoming hour (e.g. the time must start this hour)
     const soughtDate = new Date(year, month, dayInMonth, hourInDay);
     const hourTimes = timeSerie.filter(x => validHourlyTime(soughtDate, x));
-    console.log('hourtimes:');
-    console.log(hourTimes);
     if (hourTimes.length === 0) {
         return null;
     }

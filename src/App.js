@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider, connect } from 'react-redux';
 import './App.css';
 import configureStore from './state/store';
-import { fetchData } from './state/actions'
+import { refreshData } from './state/actions'
 
 import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
@@ -29,7 +29,7 @@ class AppPresentational extends React.Component {
       const now = new Date();
       if (!this.props.lastUpdate || now.getTime() - this.props.lastUpdate.getTime() > THREE_HOURS) {
         console.log('found stale data');
-        this.props.fetchData();
+        this.props.refreshData();
       }
     }
   }
@@ -67,7 +67,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchData: () => { dispatch(fetchData()); }
+    refreshData: () => { dispatch(refreshData()); }
   };
 };
 

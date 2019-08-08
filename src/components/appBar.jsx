@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
@@ -6,6 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Search } from '@material-ui/icons';
+import SearchDialog from './SearchDialog';
 
 import GPSButton from '../positionComponents/gpsButton';
 import ReloadDataButton from '../weatherComponents/reloadDataButton';
@@ -30,13 +31,23 @@ const useStyles = makeStyles(theme => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles();
+  const [openSearch, setOpenSearch] = useState(false);
   const city = useSelector(state => state.city);
+  const fetchingPosition = useSelector(state => state.fetchingPosition);
+  
+  const showSearch = () => {
+    setOpenSearch(true);
+  };
+  const hideSearch = () => {
+    setOpenSearch(false);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className='top-toolbar'>
           <div className='left-icons'>
-            <SearchButton color="inherit" />
+            <IconButton onClick={showSearch} disabled={fetchingPosition}><Search /></IconButton>
           </div>
           <Typography variant="h6" className={classes.title} >
             {city !== null ? city : 'Choose location'}
@@ -47,17 +58,8 @@ export default function ButtonAppBar() {
           </div>
         </Toolbar>
       </AppBar>
+
+      <SearchDialog color="inherit" open={openSearch} onClose={hideSearch}/>
     </div>
-  );
-};
-
-// TODO: refactor out .. 
-
-const SearchButton = (props) => {
-
-  return (
-    <IconButton>
-      <Search color="inherit" />
-    </IconButton>
   );
 };

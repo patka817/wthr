@@ -80,22 +80,13 @@ export const createDailyViewModels = (forecast) => {
     for (let i = 0; i < FORECAST_LIMIT; i++) {
         let date = addDays(today, i);
         let filtered = forecast.timeserieFilteredByDay(date);
-        console.log('handling date: ' + date);
-        console.log(filtered);
-        //const before = filtered.length;
-        //console.log('before: ' + before);
         filtered = removePassedTime(filtered);
-        //console.log('after: ' + filtered.length);
-        //console.log('' + date + ' : ');
-        console.log(filtered);
-
         const instantKeys = ['temp', 'windSpeed'];
         const minmaxValues = findMinMaxInstantValues(instantKeys, filtered);
         const wsymbols = mapTimesToWeatherSymbolPerHour(date, filtered);
         const daySymbols = reduceHourSymbolsToDaySymbols(wsymbols);
 
         const precip = calculatePrecipitation(date, filtered);
-        console.log('*************************');
 
         res.push({
             date: date,
@@ -108,8 +99,6 @@ export const createDailyViewModels = (forecast) => {
         });
     }
 
-    console.log('ViewModels:');
-    console.log(res);
     return res;
 };
 
@@ -234,8 +223,6 @@ const mapTimesToWeatherSymbolPerHour = (soughtDayDate, arrayOfTimes) => {
     for (let hour in res) {
         res[hour] = res[hour].symbol;
     }
-    console.log('symbols/h');
-    console.log(res);
     return res;
 };
 
@@ -330,8 +317,6 @@ const findMinMaxInstantValues = (instantKeys, arrayOfTimes) => {
         }
     }
 
-    //console.log('Min/max values: ');
-    //console.log(res);
     return res;
 };
 

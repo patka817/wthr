@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchData } from './../state/actions';
+import { refreshData } from './../state/actions';
 import { IconButton } from '@material-ui/core';
 import { Loop } from '@material-ui/icons';
 
@@ -21,21 +21,21 @@ class ReloadDataButtonPresentational extends React.Component {
 
         let className = this.props.loading ? 'rotate' : '';
         return (
-            <IconButton disabled={this.props.locatingGPS} onClick={this.onClick} color={this.props.color}><Loop className={className} /></IconButton>
+            <IconButton aria-label="Reload" disabled={this.props.locatingGPS} onClick={this.onClick} color={this.props.color}><Loop className={className} /></IconButton>
         );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading,
+        loading: state.loading || state.refreshing,
         locatingGPS: state.fetchingPosition
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onClick: () => { dispatch(fetchData()); }
+        onClick: () => { dispatch(refreshData()); }
     };
 };
 

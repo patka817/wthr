@@ -12,7 +12,8 @@ export const initialState = {
     yrForecast: null,
     lastUpdate: null,
     activeForecast: SMHI_FORECAST,
-    loading: false,
+    loading: false, // when loading for new location
+    refreshing: false, // when e.g. updating data
     error: null
 };
 
@@ -22,13 +23,23 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true,
+                yrForecast: null,
+                smhiForecast: null,
                 error: null,
             }
 
-        case Actions.ERROR_LOADING:
+        case Actions.REFRESH_DATA:
+            return {
+                ...state,
+                refreshing: true,
+                error: null
+            }
+
+        case Actions.ERROR_LOADING_REFRESHING:
             return {
                 ...state,
                 loading: false,
+                refreshing: false,
                 error: {
                     message: action.message,
                     timestamp: (new Date()).getTime()
@@ -42,6 +53,7 @@ export const rootReducer = (state = initialState, action) => {
                 yrForecast: action.yr,
                 lastUpdate: new Date(),
                 loading: false,
+                refreshing: false,
                 error: null,
             }
 
@@ -71,7 +83,14 @@ export const rootReducer = (state = initialState, action) => {
                 }
             }
 
-        case Actions.NEW_GPS_CITY_NAME:
+        case Actions.UPDATE_LOCATION:
+            return {
+                ...state,
+                lat: action.lat,
+                lon: action.lon
+            }
+
+        case Actions.NEW_CITY_NAME:
             return {
                 ...state,
                 city: action.city

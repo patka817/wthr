@@ -19,8 +19,8 @@ const ForecastToggle = (props) => {
 
     return (
         <ButtonGroup id='toggle-forecast-group'>
-            {hasSMHI ? <Button onClick={changeForecast} disabled={ smhiIsActive } >SMHI</Button> : null }
-            { hasYR ? <Button onClick={changeForecast} disabled={ yrActive }>YR</Button> : null }
+            {hasSMHI ? <Button aria-label="Toggle SMHI" onClick={changeForecast} disabled={ smhiIsActive } >SMHI</Button> : null }
+            { hasYR ? <Button aria-label="Toggle YR" onClick={changeForecast} disabled={ yrActive }>YR</Button> : null }
         </ButtonGroup>
     );
 };

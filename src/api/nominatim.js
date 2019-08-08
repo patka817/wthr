@@ -12,6 +12,7 @@ export const getCityNameForLocation = (lat, lon) => {
         let result = undefined;
         console.log(json);
         if (json.address) {
+            // TODO: fix.. include town/village if we find suburban. Search for e.g. Sundsvall..
             for (let keyIndex in REVERSE_JSON_KEY_SEARCH_ORDER) {
                 const key = REVERSE_JSON_KEY_SEARCH_ORDER[keyIndex];
                 if (json.address[key]) {
@@ -31,5 +32,13 @@ export const getCityNameForLocation = (lat, lon) => {
 };
 
 export const searchCityNames = (searchTerm) => {
-
+    const encodedSearch = encodeURIComponent(searchTerm);
+    const url = SEARCH_TEMPLATE.replace('{CITY}', encodedSearch);
+    return fetchAndExtractJSON(url)
+    .then(json => {
+        return json;
+    })
+    .catch(error => {
+        console.error(error.message);
+    });
 };

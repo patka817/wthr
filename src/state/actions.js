@@ -3,10 +3,10 @@ import fetchYRData from '../api/yr';
 import { getCityNameForLocation } from '../api/nominatim';
 
 // actions sent from thunk
-export const ERROR_LOADING = 'error-loading';
-const errorLoadingData = (msg) => {
+export const ERROR_LOADING_REFRESHING = 'error-loading-refreshing';
+const errorLoadingOrRefreshingData = (msg) => {
     return {
-        type: ERROR_LOADING,
+        type: ERROR_LOADING_REFRESHING,
         message: msg
     }
 };
@@ -17,6 +17,13 @@ const loadingData = () => {
         type: LOADING
     }
 };
+
+export const REFRESH_DATA = 'refresh-data';
+const refreshingData = () => {
+    return {
+        type: REFRESH_DATA
+    }
+}
 
 export const FETCH_SUCCESS = 'fetch-success';
 const fetchedData = (smhi, yr) => {
@@ -51,10 +58,19 @@ const failedGPSPos = (msg) => {
     };
 };
 
-export const NEW_GPS_CITY_NAME = 'new-gps-city-name';
-const newGPSCityName = (name) => {
+export const UPDATE_LOCATION = 'update-location';
+const updateLocation = (lat, lon) => {
     return {
-        type: NEW_GPS_CITY_NAME,
+        type: UPDATE_LOCATION,
+        lat,
+        lon
+    }
+}
+
+export const NEW_CITY_NAME = 'new-city-name';
+const newCityName = (name) => {
+    return {
+        type: NEW_CITY_NAME,
         city: name
     };
 };
@@ -79,7 +95,7 @@ export const getGPSPosition = () => {
                 console.log('Got location, lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
                 // One could check the distance between the new and old coords to determine if we really need to update..
                 dispatch(fetchedGPSPos(pos.coords.latitude, pos.coords.longitude));
-                fetchDataExecutor(dispatch, getState, pos.coords.latitude, pos.coords.longitude);
+                loadData(dispatch, getState, pos.coords.latitude, pos.coords.longitude);
                 getCityName(dispatch, pos.coords.latitude, pos.coords.longitude);
             }, (error) => {
                 console.log('Failed getting location: ' + error.message);
@@ -91,23 +107,46 @@ export const getGPSPosition = () => {
     };
 };
 
-// TOOO: GET searchresult... from search-text through
+export const updateToNewLocation = (lat, lon) => {
+    return (dispatch, getState) => {
+        dispatch(updateLocation(lat, lon));
+        loadData(dispatch, getState, lat, lon);
+        getCityName(dispatch, lat, lon);
+    };
+};
 
 const getCityName = (dispatch, lat, lon) => {
-    getCityNameForLocation(lat, lon)
+    return getCityNameForLocation(lat, lon)
     .then(name => {
-        dispatch(newGPSCityName(name));
+        dispatch(newCityName(name));
     }).catch(err => {
         console.log(err);
-        dispatch(newGPSCityName('Current location'));
+        dispatch(newCityName('Unavailable'));
+        dispatch(errorLoadingOrRefreshingData('Unable to get location name: ' + err.message));
     });
 }
 
 // GET weather data
-const fetchDataExecutor = (dispatch, getState, lat, lon) => {
-    dispatch(loadingData());
+
+export const loadData = () => {
+    return (dispatch, getState) => {
+        const { lat, lon } = getState();
+        dispatch(loadingData());
+        fetchData(dispatch, getState, lat, lon);
+    };
+};
+
+export const refreshData = () => {
+    return (dispatch, getState) => {
+        const { lat, lon } = getState();
+        dispatch(refreshingData());
+        fetchData(dispatch, getState, lat, lon);
+    };
+}
+
+const fetchData = (dispatch, getState, lat, lon) => {
     if (!lat || !lon) {
-        dispatch(errorLoadingData('Unable to fetch weather, missing valid location.'));
+        dispatch(errorLoadingOrRefreshingData('Unable to fetch weather, missing valid location.'));
         return;
     }
 
@@ -127,14 +166,7 @@ const fetchDataExecutor = (dispatch, getState, lat, lon) => {
             }
         }).catch(error => {
             console.log('something failed,  ' + error);
-            dispatch(errorLoadingData(error));
+            dispatch(errorLoadingOrRefreshingData(error));
         });
     }, 1000);
-};
-
-export const fetchData = () => {
-    return (dispatch, getState) => {
-        const { lat, lon } = getState();
-        fetchDataExecutor(dispatch, getState, lat, lon);
-    };
 };

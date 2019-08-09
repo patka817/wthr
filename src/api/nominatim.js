@@ -3,7 +3,7 @@ import { fetchAndExtractJSON } from './util';
 const REVERSE_TEMPLATE = 'https://nominatim.openstreetmap.org/reverse?lat={LAT}&lon={LON}&format=json&email=pclillen@gmail.com';
 
 // city district is an administrative term, so we always look for the suburb first.
-const REVERSE_JSON_KEY_SEARCH_ORDER_SUBURB = ['suburb', 'city_district'];
+const REVERSE_JSON_KEY_SEARCH_ORDER_SUBURB = ['city_district']; // 'suburb' generates worse titles than using city district... :/
 
 const REVERSE_JSON_KEY_SEARCH_ORDER_TOWN = ['city', 'town', 'county'];
 
@@ -45,9 +45,8 @@ export const getCityNameForLocation = (lat, lon) => {
         console.log(json);
         if (json && json.address) {
             const { name: townOrCity, isCity } = extractTownOrUpName(json.address);
-            let suburbDistrict = undefined;
             if (isCity) {
-                suburbDistrict = extractSuburbDistrict(json.address);
+                let suburbDistrict = extractSuburbDistrict(json.address);
                 result = suburbDistrict ? `${suburbDistrict}, ${townOrCity}`: townOrCity;
             } else {
                 result = townOrCity;

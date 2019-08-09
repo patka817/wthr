@@ -20,6 +20,8 @@ html {
   flex: 1 1 25%;
   justify-self: flex-start;
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .left-icons {

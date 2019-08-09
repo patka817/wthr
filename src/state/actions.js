@@ -115,27 +115,6 @@ export const updateToNewLocation = (lat, lon) => {
     };
 };
 
-const getCityName = (dispatch, lat, lon) => {
-    return getCityNameForLocation(lat, lon)
-    .then(name => {
-        dispatch(newCityName(name));
-    }).catch(err => {
-        console.log(err);
-        dispatch(newCityName('Unavailable'));
-        dispatch(errorLoadingOrRefreshingData('Unable to get location name: ' + err.message));
-    });
-}
-
-// GET weather data
-
-export const loadData = () => {
-    return (dispatch, getState) => {
-        const { lat, lon } = getState();
-        dispatch(loadingData());
-        fetchData(dispatch, getState, lat, lon);
-    };
-};
-
 export const refreshData = () => {
     return (dispatch, getState) => {
         const { lat, lon } = getState();
@@ -143,6 +122,22 @@ export const refreshData = () => {
         fetchData(dispatch, getState, lat, lon);
     };
 }
+
+const getCityName = (dispatch, lat, lon) => {
+    return getCityNameForLocation(lat, lon)
+        .then(name => {
+            dispatch(newCityName(name));
+        }).catch(err => {
+            console.log(err);
+            dispatch(newCityName('Unavailable'));
+            dispatch(errorLoadingOrRefreshingData('Unable to get location name: ' + err.message));
+        });
+}
+
+const loadData = (dispatch, getState, lat, lon) => {
+    dispatch(loadingData());
+    fetchData(dispatch, getState, lat, lon);
+};
 
 const fetchData = (dispatch, getState, lat, lon) => {
     if (!lat || !lon) {

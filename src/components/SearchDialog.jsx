@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Search, Close } from '@material-ui/icons';
-import { List, ListItem, ListItemText, Dialog, InputAdornment, Input, FormControl } from '@material-ui/core';
+import { List, ListItem, ListItemText, Dialog, InputAdornment, Input } from '@material-ui/core';
 import { Slide, IconButton, Toolbar, AppBar, Divider } from '@material-ui/core';
 import { updateToNewLocation } from './../state/actions';
 import { searchCityNames } from './../api/nominatim';
@@ -41,7 +41,6 @@ export default function FullScreenSearch(props) {
   }
 
   const onClick = (listitem) => {
-    console.log('Clicked ' + listitem.display_name)
     if (listitem.lat && listitem.lon) {
       dispatch(updateToNewLocation(listitem.lat, listitem.lon));
       handleClose();

@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import * as Daily from './DailyWeatherRow';
 import * as Hourly from './HourlyWeatherRow';
 import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
-import { Dialog, DialogContent, DialogActions, Button, DialogTitle, Typography } from '@material-ui/core';
+import { Dialog, DialogContent, DialogActions, Button, DialogTitle } from '@material-ui/core';
+import Issued from './Issued';
+import ForecastToggle from './ForecastToggle';
+import { flexbox } from '@material-ui/system';
 
 class WeatherTablePresentational extends React.Component {
     constructor(props) {
@@ -53,7 +56,6 @@ class WeatherTablePresentational extends React.Component {
     }
 
     showHourView(date) {
-        console.log('show ' + date);
         this.setState({ showHourViewDate: date });
     }
 
@@ -101,6 +103,9 @@ class WeatherTablePresentational extends React.Component {
                     <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
                         {this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
                     </DialogTitle>
+                    <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+                        <ForecastToggle />
+                    </div>
                     <DialogContent>
                         {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
                     </DialogContent>
@@ -122,18 +127,6 @@ const showFullscreenDialog = () => {
     return false;
 };
 
-const Issued = (props) => {
-    if (props.approvedTime) {
-        return (
-            <Typography  variant='body2'>
-                Forecast issued {props.approvedTime.toLocaleString(navigator.language, { hour12: false, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long' })}
-            </Typography>
-        );
-    } else {
-        return null;
-    }
-};
-
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
@@ -145,5 +138,3 @@ const mapStateToProps = (state) => {
 
 const WeatherTable = connect(mapStateToProps, null)(WeatherTablePresentational);
 export default WeatherTable;
-
-// {`${startTime.toLocaleString('en-us', { weekday: 'long'})} , ${startTime.toLocaleString('en-us', { month: 'long', day: 'numeric' })}`}

@@ -5,7 +5,7 @@ import { ChevronRight } from '@material-ui/icons';
 // TODO: Change Typo to div's with class: daily-font
 export const DailyHeaderRow = (props) => {
     return (
-        <div className="day-weather-row day-weather-row-header">
+        <section className="day-weather-row day-weather-row-header">
             <div className='day-weather-row-night-icon day-weather-header'>Night</div>
             <div className='day-weather-row-morning-icon day-weather-header'>Morning</div>
             <div className='day-weather-row-afternoon-icon day-weather-header'>Afternoon</div>
@@ -14,7 +14,7 @@ export const DailyHeaderRow = (props) => {
             <div className='day-weather-row-high day-weather-header'>H</div>
             <div className='day-weather-row-prec day-weather-header'>Precip.</div>
             <div className='day-weather-row-wind day-weather-header'>Wind (m/s)</div>
-        </div>
+        </section>
     );
 }
 
@@ -79,14 +79,14 @@ export const createDailyViewModels = (forecast) => {
     const today = Date();
     for (let i = 0; i < FORECAST_LIMIT; i++) {
         let date = addDays(today, i);
-        let filtered = forecast.timeserieFilteredByDay(date);
-        filtered = removePassedTime(filtered);
+        const filteredTimes = forecast.timeserieFilteredByDay(date);
+        const futureTimes = removePassedTime(filteredTimes);
         const instantKeys = ['temp', 'windSpeed'];
-        const minmaxValues = findMinMaxInstantValues(instantKeys, filtered);
-        const wsymbols = mapTimesToWeatherSymbolPerHour(date, filtered);
+        const minmaxValues = findMinMaxInstantValues(instantKeys, futureTimes);
+        const wsymbols = mapTimesToWeatherSymbolPerHour(date, filteredTimes);
         const daySymbols = reduceHourSymbolsToDaySymbols(wsymbols);
 
-        const precip = calculatePrecipitation(date, filtered);
+        const precip = calculatePrecipitation(date, futureTimes);
 
         res.push({
             date: date,
@@ -175,10 +175,12 @@ const reduceHourSymbolsToDaySymbols = (hourSymbols) => {
         }
     }
 
-    result.nightSymbol = findMaxOccuringElement(night);
-    result.morningSymbol = findMaxOccuringElement(morning);
-    result.afternoonSymbol = findMaxOccuringElement(afternoon);
-    result.eveningSymbol = findMaxOccuringElement(evening);
+    // Showing "worst" weather for the given periods instead of the most occuring seems better to not miss rain etc
+    // Then the users can expect that weather as the worst for the period.
+    result.nightSymbol = night.length > 0 ? Math.max(...night) : undefined; //findMaxOccuringElement(night);
+    result.morningSymbol = morning.length > 0 ? Math.max(...morning) : undefined; //findMaxOccuringElement(morning);
+    result.afternoonSymbol = afternoon.length > 0 ? Math.max(...afternoon) : undefined; //findMaxOccuringElement(afternoon);
+    result.eveningSymbol = evening.length > 0 ? Math.max(...evening) : undefined; //findMaxOccuringElement(evening);
 
     return result;
 };

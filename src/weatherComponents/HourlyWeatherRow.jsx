@@ -13,7 +13,7 @@ export const HourlyForecastRow = (props) => {
 
     const variant = 'body1';    
     return (
-        <div className='hourlyForecastRow'>
+        <section className='hourlyForecastRow'>
             <Typography className='hour-container' variant={variant}>
                 {startTime.toLocaleString(navigator.language, { hour: '2-digit', hour12: false })}
             </Typography>
@@ -24,12 +24,12 @@ export const HourlyForecastRow = (props) => {
                 {viewModel ? <img src={WICON_TEMPLATE.replace('{WSYMB}', viewModel.weatherSymbol).replace('{NIGHT}', isNight)} alt='weathericon' /> : '-'}
             </Typography>
             <Typography className='forecastrow-wind-container' variant={variant}>
-                {viewModel ? `${viewModel.windspeed} (${viewModel.gust}) m/s` : '-'}
+                {viewModel ? `${viewModel.windspeed} (${viewModel.gust !== null ? viewModel.gust : '-'}) m/s` : '-'}
             </Typography>
             <Typography className='forecastrow-precipitation-container' variant={variant}>
                 {viewModel ? <span><span className='blue-color'>{`${viewModel.precipitation}`}</span> mm/h</span> : '-'}
             </Typography>
-        </div>
+        </section>
     );
 };
 
@@ -93,6 +93,9 @@ const convertTimeSerieToHourlyViewModel = (year, month, dayInMonth, hourInDay, t
     for (let viewKey in INST_KEYS) {
         let modelKey = INST_KEYS[viewKey];
         viewModel[viewKey] = instant && instant[modelKey] ? instant[modelKey].value : null;
+    }
+    if (viewModel.temp != null) {
+        viewModel.temp = Math.round(viewModel.temp);
     }
     return viewModel;
 };

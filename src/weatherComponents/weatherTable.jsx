@@ -95,17 +95,17 @@ class WeatherTablePresentational extends React.Component {
 
         return (
             <>
-                <div className='weathertable'>
+                <section className='weathertable'>
                     <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
-                </div>
+                </section>
                 <Dialog fullScreen={fullScreen} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
                     <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
                         {this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
                     </DialogTitle>
-                    <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+                    <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
                         <ForecastToggle />
-                    </div>
+                    </section>
                     <DialogContent>
                         {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
                     </DialogContent>

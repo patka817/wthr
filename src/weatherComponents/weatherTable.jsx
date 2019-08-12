@@ -6,7 +6,6 @@ import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
 import { Dialog, DialogContent, DialogActions, Button, DialogTitle } from '@material-ui/core';
 import Issued from './Issued';
 import ForecastToggle from './ForecastToggle';
-import { flexbox } from '@material-ui/system';
 
 class WeatherTablePresentational extends React.Component {
     constructor(props) {

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Search, Close } from '@material-ui/icons';
 import { List, ListItem, ListItemText, Dialog, InputAdornment, Input } from '@material-ui/core';
-import { Slide, IconButton, Toolbar, AppBar, Divider } from '@material-ui/core';
+import { Slide, IconButton, Toolbar, AppBar } from '@material-ui/core';
 import { updateToNewLocation } from './../state/actions';
 import { searchCityNames } from './../api/nominatim';
 

@@ -3,7 +3,7 @@ import { Provider, connect } from 'react-redux';
 import './App.css';
 import configureStore from './state/store';
 import { refreshData } from './state/actions'
-
+import InstallBanner from './components/InstallBanner';
 import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
@@ -46,6 +46,7 @@ class AppPresentational extends React.Component {
       , <WeatherTable key='weathertable' />] : null;
     return (
       <div className='App'>
+        <InstallBanner />
         <AppBar />
         {forecastComps}
         <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />

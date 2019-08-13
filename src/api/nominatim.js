@@ -15,7 +15,6 @@ const extractSuburbDistrict = (address) => {
         const key = REVERSE_JSON_KEY_SEARCH_ORDER_SUBURB[keyIndex];
         if (address[key]) {
             result = address[key];
-            console.log('Found ' + key + ' == ' + result);
             break;
         }
     }
@@ -30,7 +29,6 @@ const extractTownOrUpName = (address) => {
         if (address[key]) {
             name = address[key];
             isCity = key === 'city';
-            console.log('Found ' + key + ' == ' + name);
             break;
         }
     }
@@ -42,7 +40,6 @@ export const getCityNameForLocation = (lat, lon) => {
     return fetchAndExtractJSON(url)
     .then(json => {
         let result = undefined;
-        console.log(json);
         if (json && json.address) {
             const { name: townOrCity, isCity } = extractTownOrUpName(json.address);
             if (isCity) {

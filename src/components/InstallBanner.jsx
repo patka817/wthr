@@ -9,29 +9,24 @@ export default function InstallBanner() {
   const beforeInstall = useCallback((e) => {
     // Prevent Chrome 67 and earlier from automatically showing the prompt
     e.preventDefault();
-    console.log('Before install prompt!');
     setDeferredPrompt(e);
   }, []);
 
   const postInstall = useCallback(() => {
-    console.log('Post install');
     setDeferredPrompt(null);
   }, []);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', beforeInstall);
     window.addEventListener('appinstalled', postInstall);
-    console.log('added eventlisteners');
 
     return () => {
       window.removeEventListener('beforeinstallprompt', beforeInstall);
       window.removeEventListener('appinstalled', postInstall);
-      console.log('removed eventlisteners');
     }
   }, [beforeInstall, postInstall]);
 
   const onInstall = () => {
-    console.log('clicked on install');
     if (!deferredPrompt) {
       return;
     }

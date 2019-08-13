@@ -74,7 +74,7 @@ const parseResponseXML = (txt) => {
 
     let xmlTimeSeries = xmlDoc.getElementsByTagName('time');
     if (!xmlTimeSeries || xmlTimeSeries.length === 0) {
-        console.log('Missing timeseries in YR data');
+        console.error('Missing timeseries in YR data');
         return null;
     }
 
@@ -90,14 +90,14 @@ const parseResponseXML = (txt) => {
     for (let index = 0; index < xmlTimeSeries.length; index++) {
         const xmlTimeSerie = xmlTimeSeries[index];
         if (!xmlTimeSerie) {
-            console.log('Missing timeserie!');
+            console.error('Missing timeserie!');
             continue;
         }
 
         const toDateString = xmlTimeSerie.getAttribute('to');
         const fromDateString = xmlTimeSerie.getAttribute('from');
         if (!toDateString || !fromDateString) {
-            console.log('Missing valid to/from date');
+            console.error('Missing valid to/from date');
             continue;
         }
 
@@ -114,32 +114,24 @@ const parseResponseXML = (txt) => {
             if (temp) {
                 timeSerie.temp.value = temp.getAttribute('value');
                 timeSerie.temp.unit = temp.getAttribute('unit');
-            } else {
-                console.log('Missing temperature in data');
             }
 
             const ws = xmlTimeSerie.getElementsByTagName('windSpeed')[0];
             if (ws) {
                 timeSerie.windSpeed.value = ws.getAttribute('mps');
                 timeSerie.windSpeed.unit = 'm/s';
-            } else {
-                console.log('Missing windspeed in data');
             }
 
             const wd = xmlTimeSerie.getElementsByTagName('windDirection')[0];
             if (wd) {
                 timeSerie.windDirection.value = wd.getAttribute('deg');
                 timeSerie.windDirection.unit = 'deg';
-            } else {
-                console.log('Missing winddirection in data');
             }
 
             const gust = xmlTimeSerie.getElementsByTagName('windGust')[0];
             if (gust) {
                 timeSerie.gust.value = gust.getAttribute('mps');
                 timeSerie.gust.unit = 'm/s';
-            } else {
-                console.log('Missing windgust in data');
             }
 
         } else {
@@ -169,7 +161,7 @@ const parseResponseXML = (txt) => {
                 timeSerie.weatherSymbol = yrNumber;
 
                 if (timeSerie.weatherSymbol === 0) {
-                    console.log('Missing mapping for YR-symbol: ' + yrNumber);
+                    console.error('Missing mapping for YR-symbol: ' + yrNumber);
                 }
             }
             

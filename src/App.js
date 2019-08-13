@@ -28,7 +28,6 @@ class AppPresentational extends React.Component {
     if (this.props.hasLocation) {
       const now = new Date();
       if (!this.props.lastUpdate || now.getTime() - this.props.lastUpdate.getTime() > THREE_HOURS) {
-        console.log('found stale data');
         this.props.refreshData();
       }
     }

@@ -92,13 +92,12 @@ export const getGPSPosition = () => {
             // TODO?: We should probably use the watch and pass in some accuracy option etc and get the first result .. 
 
             navigator.geolocation.getCurrentPosition((pos) => {
-                console.log('Got location, lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
                 // One could check the distance between the new and old coords to determine if we really need to update..
                 dispatch(fetchedGPSPos(pos.coords.latitude, pos.coords.longitude));
                 loadData(dispatch, getState, pos.coords.latitude, pos.coords.longitude);
                 getCityName(dispatch, pos.coords.latitude, pos.coords.longitude);
             }, (error) => {
-                console.log('Failed getting location: ' + error.message);
+                console.error('Failed getting location: ' + error.message);
                 dispatch(failedGPSPos(error.message));
             });
         } else {
@@ -154,13 +153,13 @@ const fetchData = (dispatch, getState, lat, lon) => {
             const state = getState();
             // TODO: we should have some epsilon in the check..
             if (state.lon !== lon || state.lat !== lat) {
-                console.log('invalid coordinates, failing data fetch');
+                console.error('invalid coordinates, failing data fetch');
                 Promise.reject('Mismatching coordinates on fetched data and state');
             } else {
                 dispatch(fetchedData(values[0], values[1]));
             }
         }).catch(error => {
-            console.log('something failed,  ' + error);
+            console.error('something failed,  ' + error);
             dispatch(errorLoadingOrRefreshingData(error));
         });
     }, 1000);

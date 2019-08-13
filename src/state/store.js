@@ -7,7 +7,6 @@ const STATE_PROPS_TO_STORE = ['lat', 'lon', 'city', 'smhiForecast', 'yrForecast'
 
 const configureStore = () => {
     const persistedState = loadState();
-    console.log(persistedState);
     const store = createStore(
         rootReducer,
         persistedState,
@@ -21,8 +20,6 @@ const configureStore = () => {
             let propKey = STATE_PROPS_TO_STORE[idx];
             storable[propKey] = state[propKey];
         }
-        //console.log('Saving state:');
-        //console.log(storable);
         saveState(storable);
     });
 

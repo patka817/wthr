@@ -30,11 +30,9 @@ class WeatherTablePresentational extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.smhiForecast !== this.props.smhiForecast) {
-            console.log('changed smhi');
             this.smhiViewModels = Daily.createDailyViewModels(nextProps.smhiForecast);
         }
         if (nextProps.yrForecast !== this.props.yrForecast) {
-            console.log('changed yr');
             this.yrViewModels = Daily.createDailyViewModels(nextProps.yrForecast);
         }
     }
@@ -71,7 +69,7 @@ class WeatherTablePresentational extends React.Component {
             return Hourly.createHourlyViewModels(forecast, this.state.showHourViewDate);
         } else {
             // TODO: dispatch error?!
-            console.log('Failed to show hourly forecast');
+            console.error('Failed to show hourly forecast');
         }
 
         return null;

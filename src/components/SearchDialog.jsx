@@ -27,8 +27,6 @@ export default function FullScreenSearch(props) {
     event.preventDefault();
     if (query && query.length > 1) {
       searchCityNames(query).then(result => {
-        console.log('Got some result!:');
-        console.log(result);
         setResults(result);
       })
     }

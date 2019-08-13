@@ -23,7 +23,7 @@ export const loadState = () => {
         
         return state;
     } catch (err) {
-        console.log('Failed to load state: ' + err);
+        console.error('Failed to load state: ' + err);
         return undefined;
     }
 };
@@ -35,6 +35,6 @@ export const saveState = (state) => {
             localStorage.setItem('state', serializedState);
         }
     } catch (err) {
-        console.log('Failed to save state: ' + err);
+        console.error('Failed to save state: ' + err);
     }
 };

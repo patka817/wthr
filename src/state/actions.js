@@ -160,7 +160,7 @@ const fetchData = (dispatch, getState, lat, lon) => {
             }
         }).catch(error => {
             console.error('something failed,  ' + error);
-            dispatch(errorLoadingOrRefreshingData(error));
+            dispatch(errorLoadingOrRefreshingData(error.message));
         });
     }, 1000);
 };

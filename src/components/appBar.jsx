@@ -42,19 +42,23 @@ export default function ButtonAppBar() {
     setOpenSearch(false);
   };
 
+  const buttonStyles = {
+    color: 'lightgrey'
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar className='top-toolbar'>
           <div className='left-icons'>
-            <IconButton onClick={showSearch} disabled={fetchingPosition}><Search /></IconButton>
+            <IconButton style={buttonStyles} onClick={showSearch} disabled={fetchingPosition}><Search /></IconButton>
           </div>
           <Typography variant="h6" className={classes.title} >
             {city !== null ? city : 'Choose location'}
           </Typography>
           <div className='right-icons'>
-            <GPSButton color="inherit" />
-            <ReloadDataButton color="inherit" />
+            <GPSButton style={buttonStyles} />
+            <ReloadDataButton style={buttonStyles} />
           </div>
         </Toolbar>
       </AppBar>

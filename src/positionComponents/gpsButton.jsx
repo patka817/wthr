@@ -18,9 +18,8 @@ class GPSButtonPresentational extends React.Component {
     }
 
     render() {
-        // {this.props.fetchingPos ? 'Locating...' : 'Get weather based on current position'}
         return (
-            <IconButton aria-label="Get GPS position" onClick={this.onClick}><MyLocation /></IconButton>
+            <IconButton style={this.props.style} aria-label="Get GPS position" onClick={this.onClick}><MyLocation /></IconButton>
         );
     }
 }

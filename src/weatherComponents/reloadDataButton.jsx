@@ -21,7 +21,7 @@ class ReloadDataButtonPresentational extends React.Component {
 
         let className = this.props.loading ? 'rotate' : '';
         return (
-            <IconButton aria-label="Reload" disabled={this.props.locatingGPS} onClick={this.onClick} color={this.props.color}><Loop className={className} /></IconButton>
+            <IconButton aria-label="Reload" disabled={this.props.locatingGPS} onClick={this.onClick} style={this.props.style}><Loop className={className} /></IconButton>
         );
     }
 }

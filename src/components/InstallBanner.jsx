@@ -62,7 +62,6 @@ export default function InstallBanner() {
     appBarStyle.display = 'block';
   }
 
-  console.log('Style.display: ' + appBarStyle.display);
   return (
     <AppBar position='static' style={appBarStyle}>
       <Toolbar style={toolbarStyle}>

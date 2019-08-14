@@ -43,7 +43,7 @@ export default function ButtonAppBar() {
   };
 
   const buttonStyles = {
-    color: 'lightgrey'
+    color: 'lightblue'
   };
 
   return (

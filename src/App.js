@@ -7,6 +7,7 @@ import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
 import { Snackbar } from '@material-ui/core';
+import Footer from './components/Footer';
 
 class AppPresentational extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class AppPresentational extends React.Component {
         <InstallBanner />
         <AppBar />
         {forecastComps}
+        <Footer />
         <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
       </div>
     );

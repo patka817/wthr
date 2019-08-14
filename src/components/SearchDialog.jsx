@@ -14,7 +14,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const useThunkDispatch = () => useDispatch();
 
 export default function FullScreenSearch(props) {
-  const classes = useStyles();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const dispatch = useThunkDispatch();
@@ -47,7 +46,7 @@ export default function FullScreenSearch(props) {
 
   return (
     <Dialog fullScreen open={props.open} onClose={handleClose} TransitionComponent={Transition}>
-      <AppBar className={classes.appBar}>
+      <AppBar>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
             <Close />

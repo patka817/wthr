@@ -56,6 +56,7 @@ export const rootReducer = (state = initialState, action) => {
                 loading: false,
                 refreshing: false,
                 error: null,
+                activeForecast: resolveActiveForecast(state.activeForecast, action.smhi, action.yr)
             }
 
         case Actions.LOADING_GPS_POS:
@@ -106,4 +107,15 @@ export const rootReducer = (state = initialState, action) => {
         default:
             return state;
     }
+};
+
+const resolveActiveForecast = (active, smhi, yr) => {
+    const hasSMHI = !!smhi;
+    const hasYR = !!yr;
+    if (active === SMHI_FORECAST && !hasSMHI) {
+        return YR_FORECAST;
+    } else if (active === YR_FORECAST && !hasYR) {
+        return SMHI_FORECAST;
+    }
+    return active;
 };

@@ -174,7 +174,15 @@ const parseResponseXML = (txt) => {
 };
 
 const fetchYRData = (lat, lon) => {
-    return fetchAndExtractText(YR_API.replace(PLACEHOLDER_LAT, lat).replace(PLACEHOLDER_LON, lon)).then(txt => parseResponseXML(txt));
+    return fetchAndExtractText(YR_API.replace(PLACEHOLDER_LAT, lat).replace(PLACEHOLDER_LON, lon))
+    .then(txt => { 
+        let forecast = parseResponseXML(txt);
+        if (forecast instanceof Forecast) {
+            forecast.lon = lon;
+            forecast.lat = lat;
+        }
+        return forecast;
+    });
 };
 
 export default fetchYRData;

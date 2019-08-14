@@ -124,10 +124,18 @@ const parseResponseJSON = (json) => {
 
 const fetchSMHIData = (lat, lon) => {
     // truncate, SMHI don't like more than 6 decimals..
-    lat = round(lat, 6);
-    lon = round(lon, 6);
+    const apiLat = round(lat, 6);
+    const apiLon = round(lon, 6);
 
-    return fetchAndExtractJSON(SMHI_API.replace(PLACEHOLDER_LAT, lat).replace(PLACEHOLDER_LON, lon)).then(json => parseResponseJSON(json));
+    return fetchAndExtractJSON(SMHI_API.replace(PLACEHOLDER_LAT, apiLat).replace(PLACEHOLDER_LON, apiLon))
+    .then(json => {
+        let forecast = parseResponseJSON(json)
+        if (forecast instanceof Forecast) {
+            forecast.lat = lat;
+            forecast.lon = lon;
+        }
+        return forecast;
+    });
 };
 
 export default fetchSMHIData;

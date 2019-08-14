@@ -2,14 +2,11 @@ import React from 'react';
 import { Provider, connect } from 'react-redux';
 import './App.css';
 import configureStore from './state/store';
-import { refreshData } from './state/actions'
 import InstallBanner from './components/InstallBanner';
 import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
 import { Snackbar } from '@material-ui/core';
-
-const THREE_HOURS = 1000 * 60 * 60 * 3;
 
 class AppPresentational extends React.Component {
   constructor(props) {
@@ -22,15 +19,6 @@ class AppPresentational extends React.Component {
 
   closeSnackbar(event, reason) {
     this.setState({ showError: false })
-  }
-
-  componentDidMount() {
-    if (this.props.hasLocation) {
-      const now = new Date();
-      if (!this.props.lastUpdate || now.getTime() - this.props.lastUpdate.getTime() > THREE_HOURS) {
-        this.props.refreshData();
-      }
-    }
   }
 
   componentWillReceiveProps(newProps) {
@@ -65,13 +53,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    refreshData: () => { dispatch(refreshData()); }
-  };
-};
-
-const AppContainer = connect(mapStateToProps, mapDispatchToProps)(AppPresentational);
+const AppContainer = connect(mapStateToProps, null)(AppPresentational);
 
 const App = () => {
   return (

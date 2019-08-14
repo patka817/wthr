@@ -147,16 +147,45 @@ const fetchData = (dispatch, getState, lat, lon) => {
     // We use timeout only to get a nice animation if the user got fast internet ... And yes, it should probably be in the UI comp..
     setTimeout(() => {
         Promise.all([
-            fetchSMHIData(lat, lon),
-            fetchYRData(lat, lon),
+            fetchSMHIData(lat, lon).catch(error => { return error }),
+            fetchYRData(lat, lon).catch(error => { return error }),
         ]).then(values => {
+            let [smhiForecast, yrForecast] = values;
+            let errorMessage = undefined;
             const state = getState();
+
+            if (smhiForecast instanceof Error) {
+                console.error('Failed to get SMHI forecast');
+                console.error(smhiForecast);
+                errorMessage = 'Failed to download SMHI forecast: ' + smhiForecast.message;
+                if (state.smhiForecast && state.smhiForecast.isValidForLocation(lat, lon)) {
+                    smhiForecast = state.smhiForecast;
+                } else {
+                    smhiForecast = null;
+                }
+            }
+
+            if (yrForecast instanceof Error) {
+                console.error('Failed to get YR forecast');
+                console.error(yrForecast);
+                errorMessage = 'Failed to download YR forecast: ' + yrForecast.message;
+                if (state.yrForecast && state.yrForecast.isValidForLocation(lat, lon)) {
+                    yrForecast = state.yrForecast;
+                } else {
+                    yrForecast = null;
+                }
+            }
+
             // TODO: we should have some epsilon in the check..
             if (state.lon !== lon || state.lat !== lat) {
                 console.error('invalid coordinates, failing data fetch');
                 Promise.reject('Mismatching coordinates on fetched data and state');
             } else {
-                dispatch(fetchedData(values[0], values[1]));
+                dispatch(fetchedData(smhiForecast, yrForecast));
+            }
+
+            if (errorMessage) {
+                dispatch(errorLoadingOrRefreshingData(errorMessage));
             }
         }).catch(error => {
             console.error('something failed,  ' + error);

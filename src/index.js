@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import initializeUpdater from './Updater/updater';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -23,3 +24,5 @@ serviceWorker.register({
         }
     }
 });
+
+initializeUpdater();

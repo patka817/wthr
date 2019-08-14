@@ -1,4 +1,5 @@
 const ONE_HOUR = 1000 * 60 * 60;
+const LATLON_EPSILON = 0.01; // See https://en.wikipedia.org/wiki/Decimal_degrees
 
 // The same mapping as SMHI
 export const WeatherSymbolMap = {
@@ -85,6 +86,8 @@ export class Forecast {
     sourceName;
     approvedTime;
     timeSerie;
+    lat;
+    lon;
 
     constructor(data) {
         this.approvedTime = null;
@@ -106,6 +109,13 @@ export class Forecast {
             }
         }
         return res;
+    }
+
+    isValidForLocation(lat, lon) {
+        if (this.lat && this.lon) {
+            return Math.abs(this.lat - lat <= LATLON_EPSILON) && Math.abs(this.lon - lon <= LATLON_EPSILON);
+        }
+        return false;
     }
 
 }

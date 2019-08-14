@@ -5,9 +5,14 @@ import { loadState, saveState } from './../localStorage';
 
 const STATE_PROPS_TO_STORE = ['lat', 'lon', 'city', 'smhiForecast', 'yrForecast', 'activeForecast', 'lastUpdate'];
 
+export let store = undefined;
 const configureStore = () => {
+    if (store !== undefined) {
+        console.error('Trying to configure the store which is already configured!');
+        return store;
+    }
     const persistedState = loadState();
-    const store = createStore(
+    store = createStore(
         rootReducer,
         persistedState,
         applyMiddleware(ReduxThunk)
@@ -22,7 +27,7 @@ const configureStore = () => {
         }
         saveState(storable);
     });
-
+    
     return store;
 };
 

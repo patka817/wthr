@@ -18,8 +18,9 @@ class GPSButtonPresentational extends React.Component {
     }
 
     render() {
+        const className = this.props.fetchingPos ? 'rotate' : '';
         return (
-            <IconButton style={this.props.style} aria-label="Get GPS position" onClick={this.onClick}><MyLocation /></IconButton>
+            <IconButton style={this.props.style} aria-label="Get GPS position" onClick={this.onClick}><MyLocation className={className} /></IconButton>
         );
     }
 }

@@ -221,7 +221,7 @@ html {
   }
 
   .MuiTypography-body1 {
-    font-size: 0.75rem !important;
+    font-size: 0.75rem !important; /* ;( */
   }
 }
 

@@ -3,13 +3,20 @@ import { refreshData } from '../state/actions'
 
 const THREE_HOURS = 1000 * 60 * 60 * 3;
 
+const threeHoursHasPassedSince = (date) => {
+    const now = new Date();
+    if (now.getTime() - date.getTime() >= THREE_HOURS) {
+        return true;
+    }
+    return false;
+};
+
 const updateData = () => {
     const state = store.getState();
     const hasLocation = state.lat && state.lon;
     const lastUpdate = state.lastUpdate;
     if (hasLocation) {
-        const now = new Date();
-        if (!lastUpdate || now.getTime() - lastUpdate.getTime() > THREE_HOURS) {
+        if (!lastUpdate || threeHoursHasPassedSince(lastUpdate)) {
             store.dispatch(refreshData());
         }
     }

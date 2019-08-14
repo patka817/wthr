@@ -1,8 +1,8 @@
 import React from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import { ChevronRight } from '@material-ui/icons';
+import { dailyDateTitle, addDays, sameDayDates } from '../Util/date';
  
-// TODO: Change Typo to div's with class: daily-font
 export const DailyHeaderRow = (props) => {
     return (
         <section className="day-weather-row day-weather-row-header">
@@ -16,21 +16,6 @@ export const DailyHeaderRow = (props) => {
             <div className='day-weather-row-wind day-weather-header'>Wind (m/s)</div>
         </section>
     );
-}
-
-export const dailyDateTitle = (date) => {
-    const now = new Date();
-    const tomorrow = addDays(now, 1);
-    let prefix = null;
-    if (sameDayDates(date, now)) {
-        prefix = 'Today';
-    } else if (sameDayDates(tomorrow, date)) {
-        prefix = 'Tomorrow';
-    } else {
-        prefix = `${date.toLocaleString(navigator.language, { weekday: 'long' })}`;
-    }
-    const dateString = `${prefix}, ${date.toLocaleString(navigator.language, { month: 'long', day: 'numeric' })}`;
-    return dateString;
 };
 
 export const DailyWeatherRow = (props) => {
@@ -103,23 +88,6 @@ export const createDailyViewModels = (forecast) => {
 };
 
 // Helpers
-
-const addDays = (date, days) => {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-};
-
-const sameDayDates = (date1, date2) => {
-    if (date1.getDate() !== date2.getDate()) {
-        return false;
-    } else if (date1.getMonth() !== date2.getMonth()) {
-        return false;
-    } else if (date1.getFullYear() !== date2.getFullYear()) {
-        return false;
-    }
-    return true;
-};
 
 // TODO: into seperate file.
 // Add it as function on array instead!
@@ -243,9 +211,18 @@ const calculatePrecipitation = (soughtDayDate, arrayOfTimes) => {
 
         const now = new Date();
         let cTime = new Date(time.startTime);
+
+        // const isInThePastOrSameDate = (date, comparedToDate) => {
+        //     return date.getTime() - comparedToDate.getTime() <= 0;
+        // };
+
+        const isSameDay = (date, otherDate) => {
+            return date.getDate() !== otherDate.getDate();
+        };
+
         while (true) {
             if ((time.endTime.getTime() - cTime.getTime()) <= 0 ||
-                cTime.getDate() !== soughtDayDate.getDate()) {
+                !isSameDay(cTime, soughtDayDate)) {
                 break;
             }
 

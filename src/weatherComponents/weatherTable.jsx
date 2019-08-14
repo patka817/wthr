@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import * as Daily from './DailyWeatherRow';
 import * as Hourly from './HourlyWeatherRow';
 import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
-import { Dialog, DialogContent, DialogActions, Button, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogContent, DialogActions, Button, DialogTitle, Typography } from '@material-ui/core';
 import Issued from './Issued';
 import ForecastToggle from './ForecastToggle';
+import { dailyDateTitle } from '../Util/date';
 
 class WeatherTablePresentational extends React.Component {
     constructor(props) {
@@ -98,7 +99,7 @@ class WeatherTablePresentational extends React.Component {
                 </section>
                 <Dialog fullScreen={fullScreen} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
                     <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
-                        {this.state.showHourViewDate ? Daily.dailyDateTitle(this.state.showHourViewDate) : ''}
+                        {this.state.showHourViewDate ? dailyDateTitle(this.state.showHourViewDate) : ''}
                     </DialogTitle>
                     <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
                         <ForecastToggle />

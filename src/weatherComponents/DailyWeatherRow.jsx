@@ -217,7 +217,7 @@ const calculatePrecipitation = (soughtDayDate, arrayOfTimes) => {
         // };
 
         const isSameDay = (date, otherDate) => {
-            return date.getDate() !== otherDate.getDate();
+            return date.getDate() === otherDate.getDate();
         };
 
         while (true) {

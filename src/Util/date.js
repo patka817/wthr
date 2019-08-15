@@ -7,7 +7,7 @@ export const dailyDateTitle = (date) => {
     } else if (sameDayDates(tomorrow, date)) {
         prefix = 'Tomorrow';
     } else {
-        prefix = `${date.toLocaleString(navigator.language, { weekday: 'long' })}`;
+        prefix = `${date.toLocaleString('en-US', { weekday: 'long' })}`;
     }
     const dateString = `${prefix}, ${date.toLocaleString(navigator.language, { month: 'long', day: 'numeric' })}`;
     return dateString;

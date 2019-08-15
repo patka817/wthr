@@ -7,7 +7,7 @@ import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
 import { Snackbar } from '@material-ui/core';
-import { ThumbDown, GpsNotFixed } from '@material-ui/icons';
+import { NotListedLocation, SentimentVeryDissatisfied } from '@material-ui/icons';
 import Footer from './components/Footer';
 import NoResultPage from './components/NoResult';
 
@@ -35,9 +35,9 @@ class AppPresentational extends React.Component {
     if (this.props.hasForecast) {
       body = [<ForecastToggle key='toggle' />, <WeatherTable key='weathertable' />];
     } else if (this.props.hasLocation && !this.props.loading) {
-      body = <NoResultPage title='No forecasts found' bodyText='Check that you have internet connection or try reloading manually. If thats not working try later.' renderIcon={props => <ThumbDown {...props} />} />;
+      body = <NoResultPage title='No forecasts found' bodyText='Check that you have internet connection or try reloading manually. If thats not working try later.' renderIcon={props => <SentimentVeryDissatisfied {...props} />} />;
     } else if (!this.props.hasLocation) {
-      body = <NoResultPage title='Missing location' bodyText='Choose location by searching or using your GPS-position.' renderIcon={props => <GpsNotFixed {...props} />} />;
+      body = <NoResultPage title='Missing location' bodyText='Choose location by searching or using your GPS-position.' renderIcon={props => <NotListedLocation {...props} />} />;
     }
     
     return (

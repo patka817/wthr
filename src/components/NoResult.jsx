@@ -34,5 +34,5 @@ const NoResultPage = (props) => {
   };
   
   const noResultDivStyle = {
-    paddingBottom: '20px'
+    paddingBottom: '10px'
   }

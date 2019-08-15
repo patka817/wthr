@@ -13,7 +13,7 @@ const threeHoursHasPassedSince = (date) => {
 
 const updateData = () => {
     const state = store.getState();
-    const hasLocation = state.lat && state.lon;
+    const hasLocation = !!state.lat && !!state.lon;
     const lastUpdate = state.lastUpdate;
     if (hasLocation) {
         if (!lastUpdate || threeHoursHasPassedSince(lastUpdate)) {

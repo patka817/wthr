@@ -34,6 +34,7 @@ const contactStyle = {
     display: 'flex',
     justifyContent: 'center',
     justifyItems: 'center',
+    paddingTop: '5px'
 };
 
 const iconStyle = { 

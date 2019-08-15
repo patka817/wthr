@@ -1,15 +1,12 @@
 import React from 'react';
 import { IconButton, Typography } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
-
-// TODO: make the icon injectable .. so we can use it when we have no weather ...
 
 const NoResultPage = (props) => {
     return (
       <section style={noResultStyle}>
         <div style={{ ...noResultDivStyle }}>
-          <IconButton style={{ fontSize: '80px' }}>
-            <Search fontSize='inherit' color='grey' />
+          <IconButton style={{ fontSize: '80px' }} disabled={true}>
+              { props.renderIcon({fontSize: 'inherit'}) }
           </IconButton>
         </div>
         <div style={{ ...noResultDivStyle }}>

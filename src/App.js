@@ -7,7 +7,9 @@ import WeatherTable from './weatherComponents/weatherTable';
 import AppBar from './components/appBar';
 import ForecastToggle from './weatherComponents/ForecastToggle';
 import { Snackbar } from '@material-ui/core';
+import { ThumbDown, GpsNotFixed } from '@material-ui/icons';
 import Footer from './components/Footer';
+import NoResultPage from './components/NoResult';
 
 class AppPresentational extends React.Component {
   constructor(props) {
@@ -29,14 +31,20 @@ class AppPresentational extends React.Component {
   }
 
   render() {
-    // TODO: show some info when we haven't got any forecast
-    const forecastComps = this.props.hasForecast ? [<ForecastToggle key='toggle' />
-      , <WeatherTable key='weathertable' />] : null;
+    let body = null;
+    if (this.props.hasForecast) {
+      body = [<ForecastToggle key='toggle' />, <WeatherTable key='weathertable' />];
+    } else if (this.props.hasLocation && !this.props.loading) {
+      body = <NoResultPage title='No forecasts found' bodyText='Check that you have internet connection or try reloading manually. If thats not working try later.' renderIcon={props => <ThumbDown {...props} />} />;
+    } else if (!this.props.hasLocation) {
+      body = <NoResultPage title='Missing location' bodyText='Choose location by searching or using your GPS-position.' renderIcon={props => <GpsNotFixed {...props} />} />;
+    }
+    
     return (
       <div className='App'>
         <InstallBanner />
         <AppBar />
-        {forecastComps}
+        {body}
         <Footer />
         <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
       </div>
@@ -51,7 +59,8 @@ const mapStateToProps = (state) => {
     smhiApprovedTime: state.smhiForecast ? state.smhiForecast.approvedTime : null,
     error: state.error,
     lastUpdate: state.lastUpdate,
-    hasLocation: state.lat && state.lon
+    hasLocation: state.lat && state.lon,
+    loading: (state.loading || state.refreshing)
   };
 };
 

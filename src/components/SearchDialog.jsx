@@ -67,7 +67,7 @@ export default function FullScreenSearch(props) {
       </List>
     );
   } else if (results && results.length === 0) {
-    body = <NoResultPage title='No results found.' bodyText='We found no location matching your search. :('/>
+    body = <NoResultPage renderIcon={renderProps => <Search {...renderProps} />} title='No results found.' bodyText='We found no location matching your search. :('/>
   }
 
   return (

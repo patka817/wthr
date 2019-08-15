@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Search, Close } from '@material-ui/icons';
-import { List, ListItem, ListItemText, Dialog, InputAdornment, Input, Divider, DialogTitle, DialogContentText, DialogActions, DialogContent } from '@material-ui/core';
-import { Slide, IconButton, Toolbar, AppBar, Button } from '@material-ui/core';
+import { List, ListItem, ListItemText, Dialog, InputAdornment, Input, Divider } from '@material-ui/core';
+import { Slide, IconButton, Toolbar, AppBar } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { updateToNewLocation } from './../state/actions';
 import { searchCityNames } from './../api/nominatim';
+import NoResultPage from './NoResult';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -55,11 +56,18 @@ export default function FullScreenSearch(props) {
     }
   };
 
+  const appBarHeight = '64px';
   let body = null;
   if (searching) {
-    body = <LinearProgress variant='query' />;
+    body = <LinearProgress variant='query' style={{ paddingTop: appBarHeight }} />;
   } else if (results && results.length > 0) {
-    body = results.map(el => <SearchListItem searchResult={el} key={el.place_id} onClick={onClick} />);
+    body = (
+      <List style={{ paddingTop: appBarHeight }}>
+        {results.map(el => <SearchListItem searchResult={el} key={el.place_id} onClick={onClick} />)}
+      </List>
+    );
+  } else if (results && results.length === 0) {
+    body = <NoResultPage title='No results found.' bodyText='We found no location matching your search. :('/>
   }
 
   return (
@@ -72,40 +80,8 @@ export default function FullScreenSearch(props) {
           <SearchInput value={query} onChange={handleInputChange} onSubmit={search} />
         </Toolbar>
       </AppBar>
-      <List style={{ paddingTop: '64px' }}>
-        {body}
-      </List>
-      { /* <NotificationDialog open={results ? results.length === 0 : false} text={"Your search didn't match any location... :("} /> */}
-    </Dialog>
-  );
-}
-
-// Does not work..
-const NotificationDialog = (props) => {
-  const [rerender, setRerender] = useState(false);
-  let hasBeenClosed = useRef(false);
-  useEffect(() => {
-    if (props.open) {
-      hasBeenClosed.current = false;
-    }
-  });
-  const handleClose = () => {
-    hasBeenClosed.current = true;
-    setRerender(!rerender);
-  };
-
-  return (
-    <Dialog open={props.open && !hasBeenClosed.current} onClose={handleClose} >
-      <DialogTitle>Whoops!</DialogTitle>
-      <DialogContent>
-      <DialogContentText>
-        {props.text}
-      </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Close</Button>
-      </DialogActions>
-    </Dialog>
+      {body}
+    </Dialog >
   );
 }
 

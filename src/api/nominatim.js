@@ -5,7 +5,7 @@ const REVERSE_TEMPLATE = 'https://nominatim.openstreetmap.org/reverse?lat={LAT}&
 // city district is an administrative term, so we always look for the suburb first.
 const REVERSE_JSON_KEY_SEARCH_ORDER_SUBURB = ['city_district']; // 'suburb' generates worse titles than using city district... :/
 
-const REVERSE_JSON_KEY_SEARCH_ORDER_TOWN = ['city', 'town', 'county'];
+const REVERSE_JSON_KEY_SEARCH_ORDER_TOWN = ['city', 'town', 'village', 'county', 'municipality'];
 
 const SEARCH_TEMPLATE = 'https://nominatim.openstreetmap.org/search?city={CITY}&format=json&email=pclillen@gmail.com';
 

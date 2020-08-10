@@ -101,10 +101,10 @@ class WeatherTablePresentational extends React.Component {
                     <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
                         {this.state.showHourViewDate ? dailyDateTitle(this.state.showHourViewDate) : ''}
                     </DialogTitle>
-                    <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
-                        <ForecastToggle />
-                    </section>
                     <DialogContent>
+                        <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'sticky', top: '-0.75rem' }}>
+                            <ForecastToggle />
+                        </section>
                         {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
                     </DialogContent>
                     <DialogActions>

@@ -50,12 +50,16 @@ html {
 /* Forecast tggle */
 
 #toggle-forecast-group {
+  text-align: center;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  position: sticky;
+  top: -0.75rem;
 }
 
 #toggle-forecast-group > button {
   min-width: 100px;
+  background-color: white;
 }
 
 #toggle-forecast-group > button:disabled {
@@ -211,7 +215,7 @@ footer {
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); } 
+  100% { transform: rotate(-360deg); } 
 }
 
 .loader:empty {

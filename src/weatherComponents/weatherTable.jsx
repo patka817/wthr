@@ -97,23 +97,29 @@ class WeatherTablePresentational extends React.Component {
                     <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
                 </section>
-                <Dialog fullScreen={fullScreen} open={this.state.showHourViewDate ? true : false} onClose={this.closeHourView}>
-                    <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
-                        {this.state.showHourViewDate ? dailyDateTitle(this.state.showHourViewDate) : ''}
-                    </DialogTitle>
-                    <DialogContent>
-                        <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'sticky', top: '-0.75rem' }}>
-                            <ForecastToggle />
-                        </section>
-                        {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button fullWidth variant='contained' onClick={this.closeHourView}>Close</Button>
-                    </DialogActions>
-                </Dialog>
+                <HourlyWeatherView fullScreen={fullScreen} show={this.state.showHourViewDate} onClose={this.closeHourView} hourViewModels={hourViewModels} />
             </>
         );
     }
+}
+
+function HourlyWeatherView(props) {
+    return (
+        <Dialog fullScreen={props.fullScreen} open={props.show ? true : false} onClose={props.onClose}>
+            <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
+                {props.show ? dailyDateTitle(props.show) : ''}
+            </DialogTitle>
+            <DialogContent>
+                <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'sticky', top: '-0.75rem' }}>
+                    <ForecastToggle />
+                </section>
+                {props.hourViewModels && props.hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
+            </DialogContent>
+            <DialogActions>
+                <Button fullWidth variant='contained' onClick={props.onClose}>Close</Button>
+            </DialogActions>
+        </Dialog>
+    );
 }
 
 const showFullscreenDialog = () => {

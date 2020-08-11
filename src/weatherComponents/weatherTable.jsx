@@ -6,8 +6,9 @@ import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
 import { Dialog, DialogContent, DialogActions, Button, DialogTitle } from '@material-ui/core';
 import Issued from './Issued';
 import ForecastToggle from './ForecastToggle';
-import { dailyDateTitle } from '../Util/date';
+import { dailyDateTitle, addDays } from '../Util/date';
 import { changeActiveHourlyForecast } from '../state/actions';
+import { useSwipeable } from 'react-swipeable';
 
 class WeatherTablePresentational extends React.Component {
     constructor(props) {
@@ -53,7 +54,7 @@ class WeatherTablePresentational extends React.Component {
     showHourView(date) {
         this.props.showHourlyForecast(date);
     }
-
+    // TODO: make a hook that gets active forecast
     activeForecast() {
         let forecast = null;
         if (this.props.activeForecast === SMHI_FORECAST) {
@@ -85,7 +86,17 @@ function HourlyWeatherModal(props) {
     const smhiForecast = useSelector(state => state.smhiForecast);
     const yrForecast = useSelector(state => state.yrForecast);
     const dispatch = useDispatch();
+    const handlers = useSwipeable({
+        onSwipedLeft: () => dispatch(changeActiveHourlyForecast(addDays(activeHourlyForecastDate, 1))),
+        onSwipedRight: () => dispatch(changeActiveHourlyForecast(addDays(activeHourlyForecastDate, -1))),
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true
+      });
+
     const close = () => dispatch(changeActiveHourlyForecast(null));
+
+
+
     const show = activeHourlyForecastDate != null;
     const title = activeHourlyForecastDate ? dailyDateTitle(activeHourlyForecastDate) : '';
     
@@ -101,7 +112,7 @@ function HourlyWeatherModal(props) {
             <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
                 {title}
             </DialogTitle>
-            <DialogContent>
+            <DialogContent {...handlers}>
                 <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'sticky', top: '-0.75rem' }}>
                     <ForecastToggle />
                 </section>

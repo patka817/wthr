@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import * as Daily from './DailyWeatherRow';
 import * as Hourly from './HourlyWeatherRow';
 import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogActions, Button, DialogTitle } from '@mate
 import Issued from './Issued';
 import ForecastToggle from './ForecastToggle';
 import { dailyDateTitle } from '../Util/date';
+import { changeActiveHourlyForecast } from '../state/actions';
 
 class WeatherTablePresentational extends React.Component {
     constructor(props) {
@@ -14,10 +15,6 @@ class WeatherTablePresentational extends React.Component {
         this.activeForecast = this.activeForecast.bind(this);
         this.listifyData = this.listifyData.bind(this);
         this.showHourView = this.showHourView.bind(this);
-        this.closeHourView = this.closeHourView.bind(this);
-        this.state = {
-            showHourViewDate: null
-        }
     }
 
     componentWillMount() {
@@ -54,26 +51,7 @@ class WeatherTablePresentational extends React.Component {
     }
 
     showHourView(date) {
-        this.setState({ showHourViewDate: date });
-    }
-
-    closeHourView() {
-        this.setState({ showHourViewDate: null });
-    }
-
-    hourlyViewModels() {
-        if (!this.state.showHourViewDate) {
-            return null;
-        }
-        const forecast = this.activeForecast();
-        if (forecast) {
-            return Hourly.createHourlyViewModels(forecast, this.state.showHourViewDate);
-        } else {
-            // TODO: dispatch error?!
-            console.error('Failed to show hourly forecast');
-        }
-
-        return null;
+        this.props.showHourlyForecast(date);
     }
 
     activeForecast() {
@@ -88,35 +66,49 @@ class WeatherTablePresentational extends React.Component {
 
     render() {
         const listitems = this.listifyData();
-        let hourViewModels = this.hourlyViewModels();
         const fullScreen = showFullscreenDialog();
-
         return (
             <>
                 <section className='weathertable'>
                     <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
                 </section>
-                <HourlyWeatherView fullScreen={fullScreen} show={this.state.showHourViewDate} onClose={this.closeHourView} hourViewModels={hourViewModels} />
+                <HourlyWeatherModal fullScreen={fullScreen} />
             </>
         );
     }
 }
 
-function HourlyWeatherView(props) {
+function HourlyWeatherModal(props) {
+    const activeHourlyForecastDate = useSelector(state => state.activeHourlyForecastDate);
+    const activeForecastId = useSelector(state => state.activeForecast);
+    const smhiForecast = useSelector(state => state.smhiForecast);
+    const yrForecast = useSelector(state => state.yrForecast);
+    const dispatch = useDispatch();
+    const close = () => dispatch(changeActiveHourlyForecast(null));
+    const show = activeHourlyForecastDate != null;
+    const title = activeHourlyForecastDate ? dailyDateTitle(activeHourlyForecastDate) : '';
+    
+    const activeForecast = activeForecastId === SMHI_FORECAST ? smhiForecast : yrForecast;
+    let hourViewModels = null;
+    if (activeForecast && activeHourlyForecastDate) {
+        hourViewModels = Hourly.createHourlyViewModels(activeForecast, activeHourlyForecastDate);
+    }
+    console.log(`houlyviewmodels: ${hourViewModels}`);
+
     return (
-        <Dialog fullScreen={props.fullScreen} open={props.show ? true : false} onClose={props.onClose}>
+        <Dialog fullScreen={props.fullScreen} open={show ? true : false} onClose={close}>
             <DialogTitle style={{ backgroundColor: '#3f51b5', color: 'white' }}>
-                {props.show ? dailyDateTitle(props.show) : ''}
+                {title}
             </DialogTitle>
             <DialogContent>
                 <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'sticky', top: '-0.75rem' }}>
                     <ForecastToggle />
                 </section>
-                {props.hourViewModels && props.hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
+                {hourViewModels && hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
             </DialogContent>
             <DialogActions>
-                <Button fullWidth variant='contained' onClick={props.onClose}>Close</Button>
+                <Button fullWidth variant='contained' onClick={close}>Close</Button>
             </DialogActions>
         </Dialog>
     );
@@ -131,14 +123,21 @@ const showFullscreenDialog = () => {
     return false;
 };
 
+const mapDispatchToProps = dispatch => {
+    return {
+        showHourlyForecast: (date) => dispatch(changeActiveHourlyForecast(date))
+    };
+};
+
 const mapStateToProps = (state) => {
     return {
         loading: state.loading,
         yrForecast: state.yrForecast,
         smhiForecast: state.smhiForecast,
-        activeForecast: state.activeForecast
+        activeForecast: state.activeForecast,
+        activeHourlyForecastDate: state.activeHourlyForecastDate
     };
 };
 
-const WeatherTable = connect(mapStateToProps, null)(WeatherTablePresentational);
+const WeatherTable = connect(mapStateToProps, mapDispatchToProps)(WeatherTablePresentational);
 export default WeatherTable;

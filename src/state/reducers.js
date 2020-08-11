@@ -14,7 +14,8 @@ export const initialState = {
     activeForecast: SMHI_FORECAST,
     loading: false, // when loading for new location
     refreshing: false, // when e.g. updating data
-    error: null
+    error: null,
+    activeHourlyForecastDate: null
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -27,6 +28,7 @@ export const rootReducer = (state = initialState, action) => {
                 smhiForecast: null,
                 lastUpdate: null,
                 error: null,
+                activeHourlyForecastDate: null
             }
 
         case Actions.REFRESH_DATA:
@@ -102,6 +104,12 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeForecast: state.activeForecast === YR_FORECAST ? SMHI_FORECAST : YR_FORECAST
+            }
+
+        case Actions.CHANGE_ACTIVE_HOURLY_FORECAST_DATE:
+            return {
+                ...state,
+                activeHourlyForecastDate: action.date
             }
 
         default:

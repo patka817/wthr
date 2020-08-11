@@ -80,6 +80,14 @@ export const toggleForecast = () => {
     return { type: TOGGLE_FORECAST };
 };
 
+export const CHANGE_ACTIVE_HOURLY_FORECAST_DATE = 'activeHourlyForecast';
+export const changeActiveHourlyForecast = (date) => {
+    return {
+        type: CHANGE_ACTIVE_HOURLY_FORECAST_DATE,
+        date: date
+    };
+};
+
 // thunk
 
 // get gps pos 

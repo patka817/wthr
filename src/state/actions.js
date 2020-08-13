@@ -80,10 +80,24 @@ export const toggleForecast = () => {
     return { type: TOGGLE_FORECAST };
 };
 
-export const CHANGE_ACTIVE_HOURLY_FORECAST_DATE = 'activeHourlyForecast';
-export const changeActiveHourlyForecast = (date) => {
+export const NEXT_HOURLY_FORECAST_DATE = 'NEXT_HOURLY_FORECAST_DATE';
+export const nextHourlyForecast = () => {
     return {
-        type: CHANGE_ACTIVE_HOURLY_FORECAST_DATE,
+        type: NEXT_HOURLY_FORECAST_DATE,
+    };
+};
+
+export const PREV_HOURLY_FORECAST_DATE = 'PREV_HOURLY_FORECAST_DATE';
+export const prevHourlyForecast = () => {
+    return {
+        type: PREV_HOURLY_FORECAST_DATE,
+    };
+};
+
+export const SHOW_HOURLY_FORECAST_DATE = 'SHOW_HOURLY_FORECAST_DATE';
+export const showHourlyForecast = (date) => {
+    return {
+        type: SHOW_HOURLY_FORECAST_DATE,
         date: date
     };
 };

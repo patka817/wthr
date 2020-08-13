@@ -43,8 +43,11 @@ export const DailyWeatherRow = (props) => {
 };
 
 // TODO: Refactor 
-const FORECAST_LIMIT = 7;
+export const FORECAST_LIMIT = 7;
 export const createDailyViewModels = (forecast) => {
+    if (!forecast) {
+        return null;
+    }
     // datum
     // ikoner: night, morning, afternoon & evening
     // min/max temp

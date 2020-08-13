@@ -6,8 +6,8 @@ import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
 import { Dialog, DialogContent, DialogActions, Button, DialogTitle } from '@material-ui/core';
 import Issued from './Issued';
 import ForecastToggle from './ForecastToggle';
-import { dailyDateTitle, addDays } from '../Util/date';
-import { changeActiveHourlyForecast } from '../state/actions';
+import { dailyDateTitle } from '../Util/date';
+import { showHourlyForecast, refreshData, nextHourlyForecast, prevHourlyForecast } from '../state/actions';
 import { useSwipeable } from 'react-swipeable';
 
 class WeatherTablePresentational extends React.Component {
@@ -54,6 +54,7 @@ class WeatherTablePresentational extends React.Component {
     showHourView(date) {
         this.props.showHourlyForecast(date);
     }
+
     // TODO: make a hook that gets active forecast
     activeForecast() {
         let forecast = null;
@@ -65,12 +66,23 @@ class WeatherTablePresentational extends React.Component {
         return forecast;
     }
 
+    onSwipedDown = (data) => {
+        if (this.props.loading || this.props.refreshing || this.props.locatingGPS) {
+            return;
+        }
+        console.log(data);
+        this.props.refreshForecast();
+    }
+
     render() {
         const listitems = this.listifyData();
         const fullScreen = showFullscreenDialog();
+        const swipeDelta = window.screen.availHeight / 4;
+        const preventTouchMovement = document.body.scrollTop === 0;
+
         return (
             <>
-                <section className='weathertable'>
+                <section className='weathertable' >
                     <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
                 </section>
@@ -86,26 +98,23 @@ function HourlyWeatherModal(props) {
     const smhiForecast = useSelector(state => state.smhiForecast);
     const yrForecast = useSelector(state => state.yrForecast);
     const dispatch = useDispatch();
+    // todo: add next/prev hourly actions and put logic inside reducer.
     const handlers = useSwipeable({
-        onSwipedLeft: () => dispatch(changeActiveHourlyForecast(addDays(activeHourlyForecastDate, 1))),
-        onSwipedRight: () => dispatch(changeActiveHourlyForecast(addDays(activeHourlyForecastDate, -1))),
+        onSwipedLeft: () => dispatch(nextHourlyForecast()),
+        onSwipedRight: () => dispatch(prevHourlyForecast()),
         preventDefaultTouchmoveEvent: true,
         trackMouse: true
-      });
-
-    const close = () => dispatch(changeActiveHourlyForecast(null));
-
-
+    });
+    const close = () => dispatch(showHourlyForecast(null));
 
     const show = activeHourlyForecastDate != null;
     const title = activeHourlyForecastDate ? dailyDateTitle(activeHourlyForecastDate) : '';
-    
+
     const activeForecast = activeForecastId === SMHI_FORECAST ? smhiForecast : yrForecast;
     let hourViewModels = null;
     if (activeForecast && activeHourlyForecastDate) {
         hourViewModels = Hourly.createHourlyViewModels(activeForecast, activeHourlyForecastDate);
     }
-    console.log(`houlyviewmodels: ${hourViewModels}`);
 
     return (
         <Dialog fullScreen={props.fullScreen} open={show ? true : false} onClose={close}>
@@ -136,7 +145,8 @@ const showFullscreenDialog = () => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showHourlyForecast: (date) => dispatch(changeActiveHourlyForecast(date))
+        showHourlyForecast: (date) => dispatch(showHourlyForecast(date)),
+        refreshForecast: () => { dispatch(refreshData()); }
     };
 };
 
@@ -146,7 +156,9 @@ const mapStateToProps = (state) => {
         yrForecast: state.yrForecast,
         smhiForecast: state.smhiForecast,
         activeForecast: state.activeForecast,
-        activeHourlyForecastDate: state.activeHourlyForecastDate
+        activeHourlyForecastDate: state.activeHourlyForecastDate,
+        locatingGPS: state.locatingGPS,
+        refreshing: state.refreshing
     };
 };
 

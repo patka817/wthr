@@ -3,6 +3,10 @@ html {
   min-height: 100vh;
 }
 
+body {
+  overscroll-behavior-y: contain; /* prevents pull to refresh on mobile chrome */
+}
+
 .App {
   text-align: center;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;

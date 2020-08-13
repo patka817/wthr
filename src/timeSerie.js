@@ -99,6 +99,17 @@ export class Forecast {
         }
     }
 
+    hasDataForDayDate(soughtDayDate) {
+        for (let timeIndex in this.timeSerie) {
+            const time = this.timeSerie[timeIndex];
+            if (sameDayDates(soughtDayDate, time.startTime) ||
+                sameDayDates(soughtDayDate, time.endTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     timeserieFilteredByDay(soughtDayDate) {
         let res = [];
         for (let timeIndex in this.timeSerie) {

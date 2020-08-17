@@ -14,7 +14,8 @@ export const initialState = {
     loading: false, // when loading for new location
     refreshing: false, // when e.g. updating data
     error: null,
-    activeHourlyForecastDate: null
+    activeHourlyForecastDate: null,
+    seenVersion: null
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -110,6 +111,20 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 activeHourlyForecastDate: action.date
             }
+
+        case Actions.UPDATED_APP:
+            return {
+                ...state,
+                newVersion: action.newVersion
+            }
+
+        case Actions.MARK_SEEN_VERSION_INFO:
+            return {
+                ...state,
+                newVersion: null,
+                seenVersion: state.newVersion
+            }
+
         default:
             return state;
     }

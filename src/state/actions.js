@@ -88,6 +88,21 @@ export const showHourlyForecast = (date) => {
     };
 };
 
+export const UPDATED_APP = 'UPDATED_APP';
+export const updatedApp = (newVersion) => {
+    return {
+        type: UPDATED_APP,
+        newVersion: newVersion
+    };
+};
+
+export const MARK_SEEN_VERSION_INFO = "SEEN_UPDATE_TEXT";
+export const dismissVersionText = () => {
+    return {
+        type: MARK_SEEN_VERSION_INFO
+    }
+};
+
 // thunk
 
 // get gps pos 

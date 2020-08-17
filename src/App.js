@@ -10,6 +10,7 @@ import { Snackbar } from '@material-ui/core';
 import { NotListedLocation, SentimentVeryDissatisfied } from '@material-ui/icons';
 import Footer from './components/Footer';
 import NoResultPage from './components/NoResult';
+import { NewVersionDialog } from './components/NewVersionDialog';
 
 class AppPresentational extends React.Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class AppPresentational extends React.Component {
         {body}
         <Footer />
         <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
+        <NewVersionDialog />
       </div>
     );
   }

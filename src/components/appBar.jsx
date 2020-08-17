@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Divider } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -34,7 +34,7 @@ export default function ButtonAppBar() {
   const [openSearch, setOpenSearch] = useState(false);
   const city = useSelector(state => state.city);
   const fetchingPosition = useSelector(state => state.fetchingPosition);
-  
+
   const showSearch = () => {
     setOpenSearch(true);
   };
@@ -63,7 +63,7 @@ export default function ButtonAppBar() {
         </Toolbar>
       </AppBar>
 
-      <SearchDialog color="inherit" open={openSearch} onClose={hideSearch}/>
+      <SearchDialog color="inherit" open={openSearch} onClose={hideSearch} />
     </div>
   );
 };

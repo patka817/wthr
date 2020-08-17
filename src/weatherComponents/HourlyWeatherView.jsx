@@ -55,11 +55,11 @@ export function HourlyWeatherModal(props) {
         [allViewModels, dates] = allValidHourlyViewModels(activeForecast);
     }
     let currentIndex = dates && activeHourlyForecastDate && dates.findIndex(date => sameDayDates(date, activeHourlyForecastDate));
-    const onChangeIndex = (index) => {
+    const onChangeIndex = (index, prevIndex, meta) => {
         let newActiveDate = dates && dates.length > index ? dates[index] : null;
         title = newActiveDate ? dailyDateTitle(newActiveDate) : "";
         document.getElementById('dialogTitleTextSection').textContent = title;
-        window.scrollTo({ top: 0 });
+        document.getElementById('hourlyweather_dialog').scrollTo({ top: 0 });
     };
 
     return (
@@ -72,15 +72,15 @@ export function HourlyWeatherModal(props) {
             <section style={{ display: 'flex', alignContent: 'center', justifyContent: 'center', backgroundColor: 'transparent', position: 'sticky', top: '-0.75rem' }}>
                 <ForecastToggle />
             </section>
-            <DialogContent>
+            <DialogContent id="hourlyweather_dialog">
                 <SwipeableViews enableMouseEvents={true} index={currentIndex >= 0 ? currentIndex : 0} onChangeIndex={onChangeIndex}>
                     {allViewModels && allViewModels.map((viewModels, idx) => (
-                        <HourlyWeatherTable key={idx} hourViewModels={viewModels} />
+                        <HourlyWeatherTable id={`hourlyweather_dialog_${idx}`} key={idx} hourViewModels={viewModels} />
                     ))}
                 </SwipeableViews>
             </DialogContent>
             <DialogActions>
-                <Button fullWidth variant='contained' onClick={close}>Close</Button>
+                <Button fullWidth color="primary" variant='contained' onClick={close}>Close</Button>
             </DialogActions>
         </Dialog>
     );
@@ -88,8 +88,8 @@ export function HourlyWeatherModal(props) {
 
 function HourlyWeatherTable(props) {
     return (
-        <>
+        <section id={props.id}>
             {props.hourViewModels && props.hourViewModels.map(viewModel => <Hourly.HourlyForecastRow viewModel={viewModel} key={viewModel.time} />)}
-        </>
+        </section>
     );
 }

@@ -1,6 +1,4 @@
 import * as Actions from './actions';
-import { addDays } from '../Util/date';
-import { FORECAST_LIMIT } from '../weatherComponents/DailyWeatherRow'; 
 export const SMHI_FORECAST = 'smhi';
 export const YR_FORECAST = 'yr';
 
@@ -112,50 +110,9 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 activeHourlyForecastDate: action.date
             }
-        
-        case Actions.NEXT_HOURLY_FORECAST_DATE:
-            if (!state.activeHourlyForecastDate) {
-                return state;
-            }
-            let nextDate = addDays(state.activeHourlyForecastDate, 1);
-            let limitDate = addDays((new Date()).setHours(0,0,0,0), FORECAST_LIMIT);
-            if (nextDate >= limitDate) {
-                return state;
-            }
-            let data = activeForecastData(state);
-            if (!data || !data.hasDataForDayDate(nextDate)) {
-                return state;
-            }
-            return {
-                ...state,
-                activeHourlyForecastDate: nextDate
-            }
-
-        case Actions.PREV_HOURLY_FORECAST_DATE:
-            if (!state.activeHourlyForecastDate) {
-                return state;
-            }
-            let prevDate = addDays(state.activeHourlyForecastDate, -1);
-            if (prevDate < (new Date()).setHours(0,0,0,0)) {
-                return state;
-            }
-            return {
-                ...state,
-                activeHourlyForecastDate: prevDate
-            }
-
         default:
             return state;
     }
-};
-
-const activeForecastData = (state) => {
-    if (state.activeForecast === SMHI_FORECAST) {
-        return state.smhiForecast;
-    } else if (state.activeForecast === YR_FORECAST) {
-        return state.yrForecast;
-    }
-    return null;
 };
 
 const resolveActiveForecast = (active, smhi, yr) => {

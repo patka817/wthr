@@ -14,7 +14,6 @@ export const initialState = {
     loading: false, // when loading for new location
     refreshing: false, // when e.g. updating data
     error: null,
-    activeHourlyForecastDate: null,
     seenVersion: null
 };
 
@@ -27,8 +26,7 @@ export const rootReducer = (state = initialState, action) => {
                 yrForecast: null,
                 smhiForecast: null,
                 lastUpdate: null,
-                error: null,
-                activeHourlyForecastDate: null
+                error: null
             }
 
         case Actions.REFRESH_DATA:
@@ -104,12 +102,6 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeForecast: state.activeForecast === YR_FORECAST ? SMHI_FORECAST : YR_FORECAST
-            }
-
-        case Actions.SHOW_HOURLY_FORECAST_DATE:
-            return {
-                ...state,
-                activeHourlyForecastDate: action.date
             }
 
         case Actions.UPDATED_APP:

@@ -4,9 +4,8 @@ import ForecastToggle from './ForecastToggle';
 import { dailyDateTitle, addDays, sameDayDates } from '../Util/date';
 import * as Hourly from './HourlyWeatherRow';
 import { SMHI_FORECAST } from '../state/reducers';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Dialog, DialogContent, DialogActions, Button, DialogTitle, Slide } from '@material-ui/core';
-import { showHourlyForecast } from '../state/actions';
 import { FORECAST_LIMIT } from './DailyWeatherRow';
 
 const LeftTransition = React.forwardRef(function Transition(props, ref) {
@@ -38,13 +37,12 @@ function allValidHourlyViewModels(forecast) {
 }
 
 export function HourlyWeatherModal(props) {
-    const activeHourlyForecastDate = useSelector(state => state.activeHourlyForecastDate);
     const activeForecastId = useSelector(state => state.activeForecast);
     const smhiForecast = useSelector(state => state.smhiForecast);
     const yrForecast = useSelector(state => state.yrForecast);
-    const dispatch = useDispatch();
-    const close = () => dispatch(showHourlyForecast(null));
+    const close = props.onClose;
 
+    const activeHourlyForecastDate = props.forecastDate;
     const show = activeHourlyForecastDate != null;
     let title = activeHourlyForecastDate ? dailyDateTitle(activeHourlyForecastDate) : '';
 

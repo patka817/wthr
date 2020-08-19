@@ -80,14 +80,6 @@ export const toggleForecast = () => {
     return { type: TOGGLE_FORECAST };
 };
 
-export const SHOW_HOURLY_FORECAST_DATE = 'SHOW_HOURLY_FORECAST_DATE';
-export const showHourlyForecast = (date) => {
-    return {
-        type: SHOW_HOURLY_FORECAST_DATE,
-        date: date
-    };
-};
-
 export const UPDATED_APP = 'UPDATED_APP';
 export const updatedApp = (newVersion) => {
     return {

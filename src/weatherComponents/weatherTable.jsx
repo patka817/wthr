@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Daily from './DailyWeatherRow';
 import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
 import Issued from './Issued';
-import { showHourlyForecast, refreshData } from '../state/actions';
+import { refreshData } from '../state/actions';
 import { HourlyWeatherModal } from './HourlyWeatherView';
 
 class WeatherTablePresentational extends React.Component {
@@ -12,6 +12,9 @@ class WeatherTablePresentational extends React.Component {
         this.activeForecast = this.activeForecast.bind(this);
         this.listifyData = this.listifyData.bind(this);
         this.showHourView = this.showHourView.bind(this);
+        this.state = {
+            forecastDate: null
+        };
     }
 
     componentWillMount() {
@@ -48,7 +51,10 @@ class WeatherTablePresentational extends React.Component {
     }
 
     showHourView(date) {
-        this.props.showHourlyForecast(date);
+        this.setState({
+            ...this.state,
+            forecastDate: date
+        });
     }
 
     // TODO: make a hook that gets active forecast
@@ -62,14 +68,6 @@ class WeatherTablePresentational extends React.Component {
         return forecast;
     }
 
-    onSwipedDown = (data) => {
-        if (this.props.loading || this.props.refreshing || this.props.locatingGPS) {
-            return;
-        }
-        console.log(data);
-        this.props.refreshForecast();
-    }
-
     render() {
         const listitems = this.listifyData();
         const fullScreen = showFullscreenDialog();
@@ -79,7 +77,7 @@ class WeatherTablePresentational extends React.Component {
                     <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
                     {listitems ? listitems : <p>Missing items</p>}
                 </section>
-                <HourlyWeatherModal fullScreen={fullScreen} />
+                <HourlyWeatherModal onClose={ () => { this.showHourView(null); } } forecastDate={this.activeForecast() && this.state.forecastDate} fullScreen={fullScreen} />
             </>
         );
     }
@@ -96,7 +94,6 @@ const showFullscreenDialog = () => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        showHourlyForecast: (date) => dispatch(showHourlyForecast(date)),
         refreshForecast: () => { dispatch(refreshData()); }
     };
 };
@@ -107,7 +104,6 @@ const mapStateToProps = (state) => {
         yrForecast: state.yrForecast,
         smhiForecast: state.smhiForecast,
         activeForecast: state.activeForecast,
-        activeHourlyForecastDate: state.activeHourlyForecastDate,
         locatingGPS: state.locatingGPS,
         refreshing: state.refreshing
     };

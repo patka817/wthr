@@ -1,86 +1,35 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as Daily from './DailyWeatherRow';
 import { YR_FORECAST, SMHI_FORECAST } from '../state/reducers';
 import Issued from './Issued';
-import { refreshData } from '../state/actions';
 import { HourlyWeatherModal } from './HourlyWeatherView';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-class WeatherTablePresentational extends React.Component {
-    constructor(props) {
-        super(props);
-        this.activeForecast = this.activeForecast.bind(this);
-        this.listifyData = this.listifyData.bind(this);
-        this.showHourView = this.showHourView.bind(this);
-        this.state = {
-            forecastDate: null
-        };
+function listifyData(activeForecast, smhiViewModels, yrViewModels, onShowHourView) {
+    let viewModels = [];
+    if (activeForecast === SMHI_FORECAST && smhiViewModels) {
+        viewModels = smhiViewModels;
+    } else if (activeForecast === YR_FORECAST && yrViewModels) {
+        viewModels = yrViewModels;
+    }
+    let res = viewModels.map(el => <Daily.DailyWeatherRow key={el.date} viewModel={el} onClick={() => { onShowHourView(el.date) }} />);
+    if (res.length > 0) {
+        res.unshift([<Daily.DailyHeaderRow key='headerrow' />]);
     }
 
-    componentWillMount() {
-        if (this.props.smhiForecast) {
-            this.smhiViewModels = Daily.createDailyViewModels(this.props.smhiForecast);
-        }
-        if (this.props.yrForecast) {
-            this.yrViewModels = Daily.createDailyViewModels(this.props.yrForecast);
-        }
-    }
+    return res;
+}
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.smhiForecast !== this.props.smhiForecast) {
-            this.smhiViewModels = Daily.createDailyViewModels(nextProps.smhiForecast);
-        }
-        if (nextProps.yrForecast !== this.props.yrForecast) {
-            this.yrViewModels = Daily.createDailyViewModels(nextProps.yrForecast);
-        }
+function resolveForecast(activeForecast, smhiForecast, yrForecast) {
+    let forecast = null;
+    if (activeForecast === SMHI_FORECAST) {
+        forecast = smhiForecast;
+    } else if (activeForecast === YR_FORECAST) {
+        forecast = yrForecast;
     }
-
-    listifyData() {
-        let viewModels = [];
-        if (this.props.activeForecast === SMHI_FORECAST && this.smhiViewModels) {
-            viewModels = this.smhiViewModels;
-        } else if (this.props.activeForecast === YR_FORECAST && this.yrViewModels) {
-            viewModels = this.yrViewModels;
-        }
-        let res = viewModels.map(el => <Daily.DailyWeatherRow key={el.date} viewModel={el} onClick={() => { this.showHourView(el.date) }} />);
-        if (res.length > 0) {
-            res.unshift([<Daily.DailyHeaderRow key='headerrow' />]);
-        }
-
-        return res;
-    }
-
-    showHourView(date) {
-        this.setState({
-            ...this.state,
-            forecastDate: date
-        });
-    }
-
-    // TODO: make a hook that gets active forecast
-    activeForecast() {
-        let forecast = null;
-        if (this.props.activeForecast === SMHI_FORECAST) {
-            forecast = this.props.smhiForecast;
-        } else if (this.props.activeForecast === YR_FORECAST) {
-            forecast = this.props.yrForecast;
-        }
-        return forecast;
-    }
-
-    render() {
-        const listitems = this.listifyData();
-        const fullScreen = showFullscreenDialog();
-        return (
-            <>
-                <section className='weathertable' >
-                    <Issued approvedTime={this.activeForecast() ? this.activeForecast().approvedTime : null} />
-                    {listitems ? listitems : <p>Missing items</p>}
-                </section>
-                <HourlyWeatherModal onClose={ () => { this.showHourView(null); } } forecastDate={this.activeForecast() && this.state.forecastDate} fullScreen={fullScreen} />
-            </>
-        );
-    }
+    return forecast;
 }
 
 const showFullscreenDialog = () => {
@@ -92,22 +41,39 @@ const showFullscreenDialog = () => {
     return false;
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        refreshForecast: () => { dispatch(refreshData()); }
-    };
-};
+function WeatherTable(props) {
+    const [forecastDate, setForecastDate] = useState(null);
+    const [smhiViewModels, setSmhiViewModels] = useState(null);
+    const [yrViewModels, setYrViewModels] = useState(null);
+    const yrForecast = useSelector(state => state.yrForecast);
+    const smhiForecast = useSelector(state => state.smhiForecast);
+    const activeForecast = useSelector(state => state.activeForecast);
 
-const mapStateToProps = (state) => {
-    return {
-        loading: state.loading,
-        yrForecast: state.yrForecast,
-        smhiForecast: state.smhiForecast,
-        activeForecast: state.activeForecast,
-        locatingGPS: state.locatingGPS,
-        refreshing: state.refreshing
-    };
-};
+    useEffect(() => {
+        console.log('generating daily viewmodels SMHI');
+        let viewModels = Daily.createDailyViewModels(smhiForecast);
+        setSmhiViewModels(viewModels);
+    }, [smhiForecast])
 
-const WeatherTable = connect(mapStateToProps, mapDispatchToProps)(WeatherTablePresentational);
+    useEffect(() => {
+        console.log('generating daily viewmodels YR');
+        let viewModels = Daily.createDailyViewModels(yrForecast);
+        setYrViewModels(viewModels);
+    }, [yrForecast])
+
+    const forecastInUse = resolveForecast(activeForecast, smhiForecast, yrForecast);
+
+    const listitems = listifyData(activeForecast, smhiViewModels, yrViewModels, setForecastDate);
+    const fullScreen = showFullscreenDialog();
+    return (
+        <>
+            <section className='weathertable' >
+                <Issued approvedTime={forecastInUse ? forecastInUse.approvedTime : null} />
+                {listitems ? listitems : <p>Missing items</p>}
+            </section>
+            <HourlyWeatherModal onClose={ () => { setForecastDate(null); } } forecastDate={forecastInUse && forecastDate} fullScreen={fullScreen} />
+        </>
+    );
+}
+
 export default WeatherTable;

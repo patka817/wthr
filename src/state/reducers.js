@@ -7,35 +7,15 @@ export const initialState = {
     lon: null,
     city: null,
     fetchingPosition: false,
-    smhiForecast: null,
-    yrForecast: null,
     lastUpdate: null,
     activeForecast: SMHI_FORECAST,
     loading: false, // when loading for new location
-    refreshing: false, // when e.g. updating data
     error: null,
     seenVersion: null
 };
 
 export const rootReducer = (state = initialState, action) => {
     switch (action.type) {
-        case Actions.LOADING:
-            return {
-                ...state,
-                loading: true,
-                yrForecast: null,
-                smhiForecast: null,
-                lastUpdate: null,
-                error: null
-            }
-
-        case Actions.REFRESH_DATA:
-            return {
-                ...state,
-                refreshing: true,
-                error: null
-            }
-
         case Actions.ERROR_LOADING_REFRESHING:
             return {
                 ...state,
@@ -45,18 +25,6 @@ export const rootReducer = (state = initialState, action) => {
                     message: action.message,
                     timestamp: (new Date()).getTime()
                 }
-            }
-
-        case Actions.FETCH_SUCCESS:
-            return {
-                ...state,
-                smhiForecast: action.smhi,
-                yrForecast: action.yr,
-                lastUpdate: new Date(),
-                loading: false,
-                refreshing: false,
-                error: null,
-                activeForecast: resolveActiveForecast(state.activeForecast, action.smhi, action.yr)
             }
 
         case Actions.LOADING_GPS_POS:
@@ -120,15 +88,4 @@ export const rootReducer = (state = initialState, action) => {
         default:
             return state;
     }
-};
-
-const resolveActiveForecast = (active, smhi, yr) => {
-    const hasSMHI = !!smhi;
-    const hasYR = !!yr;
-    if (active === SMHI_FORECAST && !hasSMHI) {
-        return YR_FORECAST;
-    } else if (active === YR_FORECAST && !hasYR) {
-        return SMHI_FORECAST;
-    }
-    return active;
 };

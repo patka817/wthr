@@ -1,12 +1,11 @@
 import React from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import ForecastToggle from './ForecastToggle';
-import { dailyDateTitle, addDays, sameDayDates } from '../Util/date';
+import { dailyDateTitle, sameDayDates } from '../Util/date';
 import * as Hourly from './HourlyWeatherRow';
-import { SMHI_FORECAST } from '../state/reducers';
-import { useSelector } from 'react-redux';
+import { useActiveHourlyViewModels } from '../viewmodels/HourlyViewModelHook';
 import { Dialog, DialogContent, DialogActions, Button, DialogTitle, Slide } from '@material-ui/core';
-import { FORECAST_LIMIT } from './DailyWeatherRow';
+
 
 const LeftTransition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
@@ -16,42 +15,20 @@ const UpTransition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function allValidHourlyViewModels(forecast) {
-    console.log('generating new viewmodels');
-    if (!forecast) {
-        return [[], []];
-    }
-    let res = [];
-    let dates = [];
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    for (let i = 0; i < FORECAST_LIMIT; i++) {
-        let date = addDays(today, i);
-        let viewModels = Hourly.createHourlyViewModels(forecast, date);
-        if (viewModels.length > 0) {
-            res.push(viewModels);
-            dates.push(date);
-        }
-    }
-    return [res, dates];
-}
-
 export function HourlyWeatherModal(props) {
-    const activeForecastId = useSelector(state => state.activeForecast);
-    const smhiForecast = useSelector(state => state.smhiForecast);
-    const yrForecast = useSelector(state => state.yrForecast);
     const close = props.onClose;
-
     const activeHourlyForecastDate = props.forecastDate;
     const show = activeHourlyForecastDate != null;
     let title = activeHourlyForecastDate ? dailyDateTitle(activeHourlyForecastDate) : '';
 
-    const activeForecast = activeForecastId === SMHI_FORECAST ? smhiForecast : yrForecast;
     let allViewModels = [];
     let dates = null;
-    if (activeForecast && activeHourlyForecastDate) {
-        [allViewModels, dates] = allValidHourlyViewModels(activeForecast);
+    const active = useActiveHourlyViewModels();
+    if (activeHourlyForecastDate && active) {
+        allViewModels = active.viewmodels;
+        dates = active.dates;
     }
+
     let currentIndex = dates && activeHourlyForecastDate && dates.findIndex(date => sameDayDates(date, activeHourlyForecastDate));
     const onChangeIndex = (index, prevIndex, meta) => {
         let newActiveDate = dates && dates.length > index ? dates[index] : null;

@@ -1,5 +1,5 @@
 import { store } from '../state/store';
-import { refreshData, updatedApp } from '../state/actions'
+import { updatedApp } from '../state/actions'
 import AppConfig from '../appConfig';
 
 const THREE_HOURS = 1000 * 60 * 60 * 3;
@@ -26,14 +26,6 @@ const updateData = () => {
         let isUpatedSinceIntroducedVersionText = (!lastSeenVersion && AppConfig.version === '1.4.1');
         if (isUpatedSinceIntroducedVersionText || lastSeenVersion !== AppConfig.version) {
             store.dispatch(updatedApp(AppConfig.version));
-        }
-    }
-
-    const hasLocation = !!state.lat && !!state.lon;
-    const lastUpdate = state.lastUpdate;
-    if (hasLocation) {
-        if (!lastUpdate || threeHoursHasPassedSince(lastUpdate)) {
-            store.dispatch(refreshData());
         }
     }
 };

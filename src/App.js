@@ -1,5 +1,5 @@
-import React from 'react';
-import { Provider, connect } from 'react-redux';
+import React, { useState } from 'react';
+import { Provider, useSelector } from 'react-redux';
 import './App.css';
 import configureStore from './state/store';
 import InstallBanner from './components/InstallBanner';
@@ -11,67 +11,62 @@ import { NotListedLocation, SentimentVeryDissatisfied } from '@material-ui/icons
 import Footer from './components/Footer';
 import NoResultPage from './components/NoResult';
 import { NewVersionDialog } from './components/NewVersionDialog';
+import { ReactQueryDevtools } from 'react-query-devtools';
+import { useYR } from './api/yr';
+import { useSMHI } from './api/smhi';
 
-class AppPresentational extends React.Component {
-  constructor(props) {
-    super(props);
-    this.closeSnackbar = this.closeSnackbar.bind(this);
-    this.state = {
-      showError: false
-    };
+const AppContainer = (props) => {
+  const [lastError, setLastError] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const stateError = useSelector(state => state.error);
+  const lat = useSelector(state => state.lat);
+  const lon = useSelector(state => state.lon);
+  const { forecast: yrForecast, isLoading, yrError } = useYR();
+  const { forecast: smhiForecast, isLoadingSMHI, SMHIError } = useSMHI();
+
+  const hasLocation = lat && lon;
+
+  const error = stateError || yrError || SMHIError;
+  const differentErrorMessages = lastError && error && lastError.message !== error.message;
+  const firstError = lastError === null && error !== null && error !== undefined;
+  if (firstError || differentErrorMessages) {
+    setLastError(error);
+    setShowError(true);
   }
 
-  closeSnackbar(event, reason) {
-    this.setState({ showError: false })
+  const hasForecast = smhiForecast || yrForecast;
+  const loading = isLoading || isLoadingSMHI;
+
+  let body = null;
+  if (hasForecast) {
+    body = [<ForecastToggle key='toggle' />, <WeatherTable key='weathertable' />];
+  } else if (hasLocation && !loading) {
+    body = <NoResultPage title='No forecasts found' bodyText='Check that you have internet connection or try reloading manually. If thats not working try later.' renderIcon={props => <SentimentVeryDissatisfied {...props} />} />;
+  } else if (!hasLocation) {
+    body = <NoResultPage title='Missing location' bodyText='Choose location by searching or using your GPS-position.' renderIcon={props => <NotListedLocation {...props} />} />;
   }
 
-  componentWillReceiveProps(newProps) {
-    if (this.props.error !== newProps.error && newProps.error) {
-      this.setState({ showError: true })
-    }
-  }
-
-  render() {
-    let body = null;
-    if (this.props.hasForecast) {
-      body = [<ForecastToggle key='toggle' />, <WeatherTable key='weathertable' />];
-    } else if (this.props.hasLocation && !this.props.loading) {
-      body = <NoResultPage title='No forecasts found' bodyText='Check that you have internet connection or try reloading manually. If thats not working try later.' renderIcon={props => <SentimentVeryDissatisfied {...props} />} />;
-    } else if (!this.props.hasLocation) {
-      body = <NoResultPage title='Missing location' bodyText='Choose location by searching or using your GPS-position.' renderIcon={props => <NotListedLocation {...props} />} />;
-    }
-    
-    return (
-      <div className='App'>
-        <InstallBanner />
-        <AppBar />
-        {body}
-        <Footer />
-        <Snackbar message={this.props.error ? this.props.error.message : null} onClose={this.closeSnackbar} autoHideDuration={3000} open={this.state.showError} />
-        <NewVersionDialog />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    hasForecast: (state.yrForecast || state.smhiForecast),
-    yrApprovedTime: state.yrForecast ? state.yrForecast.approvedTime : null,
-    smhiApprovedTime: state.smhiForecast ? state.smhiForecast.approvedTime : null,
-    error: state.error,
-    lastUpdate: state.lastUpdate,
-    hasLocation: state.lat && state.lon,
-    loading: (state.loading || state.refreshing)
+  const onClose = () => {
+    setShowError(false);
   };
-};
 
-const AppContainer = connect(mapStateToProps, null)(AppPresentational);
+  return (
+    <div className='App'>
+      <InstallBanner />
+      <AppBar />
+      {body}
+      <Footer />
+      <Snackbar message={lastError ? lastError.message : null} onClose={onClose} autoHideDuration={3000} open={showError} />
+      <NewVersionDialog />
+    </div>
+  );
+};
 
 const App = () => {
   return (
     <Provider store={configureStore()}>
       <AppContainer />
+      <ReactQueryDevtools initialIsOpen />
     </Provider>
   );
 }

@@ -82,6 +82,8 @@ export class Time {
     }
 };
 
+const DATE_KEYS = ['endTime', 'startTime', 'approvedTime'];
+const TIMESERIES_KEYS = ['timeSerie'];
 export class Forecast {
     sourceName;
     approvedTime;
@@ -97,6 +99,19 @@ export class Forecast {
         if (data) {
             Object.assign(this, data);
         }
+    }
+
+    static fromJSON(jsonString) {
+        const parsedForecast = JSON.parse(jsonString, (name, value) => {
+            if (TIMESERIES_KEYS.indexOf(name) !== -1) {
+                return value.map(x => new Time(x));
+            } else if (DATE_KEYS.indexOf(name) !== -1) {
+                return new Date(value);
+            }
+            return value;
+        });
+        const forecast = Object.assign(new Forecast(), parsedForecast);
+        return forecast;
     }
 
     hasDataForDayDate(soughtDayDate) {

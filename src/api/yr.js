@@ -1,6 +1,8 @@
 import { fetchAndExtractText } from './util';
 import { Time, Forecast } from '../timeSerie';
 import { round } from 'lodash';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
@@ -174,6 +176,7 @@ const parseResponseXML = (txt) => {
 };
 
 const fetchYRData = (lat, lon) => {
+    console.log(`FETCHING YR ${lat}:${lon}`);
     return fetchAndExtractText(YR_API.replace(PLACEHOLDER_LAT, lat).replace(PLACEHOLDER_LON, lon))
     .then(txt => { 
         let forecast = parseResponseXML(txt);
@@ -185,5 +188,20 @@ const fetchYRData = (lat, lon) => {
     });
 };
 
-export default fetchYRData;
+export const useYR = () => {
+    const lat = useSelector(state => state.lat);
+    const lon = useSelector(state => state.lon);
+    const { data, isLoading, error } = useQuery(['YR',lat, lon],
+     (key, lat, lon ) => fetchYRData(lat, lon),
+     { 
+         staleTime: 1000*60*60,
+         cacheTime: 1000*60*60*72,
+         enabled: lat && lon,
+        });
+    return {
+        forecast: data,
+        isLoading,
+        error
+    }
+};
 

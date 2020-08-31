@@ -1,44 +1,37 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { refreshData } from './../state/actions';
 import { IconButton } from '@material-ui/core';
 import { Loop } from '@material-ui/icons';
+import { useYR } from '../api/yr';
+import { useSMHI } from '../api/smhi';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useQueryCache } from 'react-query';
 
-class ReloadDataButtonPresentational extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onClick = this.onClick.bind(this);
-    }
+function ReloadDataButton(props) {
+    const [manualLoading, setManualLoading] = useState(false);
+    const locatingGPS = useSelector(state => state.locatingGPS);
+    const { isLoading: isLoadingYR } = useYR()
+    const { isLoading: isLoadingSMHI } = useSMHI()
+    const isLoading = manualLoading || isLoadingYR || isLoadingSMHI;
+    const cache = useQueryCache()
+    const onClick = () => {
+        setManualLoading(true);
+        setTimeout(() => {
+                cache.invalidateQueries((query) => {
+                    if (query.queryKey instanceof Array) {
+                        const yrIndex = query.queryKey.indexOf('YR');
+                        const smhiIndex = query.queryKey.indexOf('SMHI');
+                        return smhiIndex >= 0 || yrIndex >= 0;
+                    }
+                    return false;
+                });
+                setManualLoading(false);
+        }, 1000);
+    };
 
-    onClick() {
-        if (this.props.loading || this.props.locatingGPS) {
-            return;
-        }
-        this.props.onClick();
-    }
-
-    render() {
-
-        let className = this.props.loading ? 'rotate' : '';
-        return (
-            <IconButton aria-label="Reload" disabled={this.props.locatingGPS} onClick={this.onClick} style={this.props.style}><Loop className={className} /></IconButton>
-        );
-    }
+    let className = isLoading ? 'rotate' : '';
+    return (
+        <IconButton aria-label="Reload" disabled={locatingGPS} onClick={ onClick } style={props.style}><Loop id="reloadDataButtonLoopIcon" className={className} /></IconButton>
+    );
 }
-
-const mapStateToProps = (state) => {
-    return {
-        loading: state.loading || state.refreshing,
-        locatingGPS: state.fetchingPosition
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onClick: () => { dispatch(refreshData()); }
-    };
-};
-
-const ReloadDataButton = connect(mapStateToProps, mapDispatchToProps)(ReloadDataButtonPresentational);
-
 export default ReloadDataButton;

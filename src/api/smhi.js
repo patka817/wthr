@@ -1,6 +1,8 @@
 import { round } from 'lodash';
 import { fetchAndExtractJSON } from './util';
 import { Forecast, Time } from './../timeSerie';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
@@ -75,7 +77,7 @@ const parseResponseJSON = (json) => {
         for (let index in json.timeSeries) {
             let x = json.timeSeries[index];
             let time = new Time();
-            
+
             mapObjects(time, x, 'endTime', 'validTime', (val) => new Date(val));
 
             // SMHI's time is indirect given by the previous time (from/start time) until 'validTime' (to/end date).
@@ -122,20 +124,36 @@ const parseResponseJSON = (json) => {
     }
 };
 
-const fetchSMHIData = (lat, lon) => {
+export const fetchSMHIData = (lat, lon) => {
+    console.log(`FETCHING SMHI ${lat}:${lon}`);
     // truncate, SMHI don't like more than 6 decimals..
     const apiLat = round(lat, 6);
     const apiLon = round(lon, 6);
 
     return fetchAndExtractJSON(SMHI_API.replace(PLACEHOLDER_LAT, apiLat).replace(PLACEHOLDER_LON, apiLon))
-    .then(json => {
-        let forecast = parseResponseJSON(json)
-        if (forecast instanceof Forecast) {
-            forecast.lat = lat;
-            forecast.lon = lon;
-        }
-        return forecast;
-    });
+        .then(json => {
+            let forecast = parseResponseJSON(json)
+            if (forecast instanceof Forecast) {
+                forecast.lat = lat;
+                forecast.lon = lon;
+            }
+            return forecast;
+        });
 };
 
-export default fetchSMHIData;
+export const useSMHI = () => {
+    const lat = useSelector(state => state.lat);
+    const lon = useSelector(state => state.lon);
+    const { data, isLoading, error } = useQuery(['SMHI',lat, lon],
+     (key, lat, lon ) => fetchSMHIData(lat, lon),
+     { 
+        staleTime: 1000*60*60, 
+        cacheTime: 1000*60*60*72,
+        enabled: lat && lon,
+    });
+    return {
+        forecast: data,
+        isLoading,
+        error
+    }
+};

@@ -105,10 +105,11 @@ const reduceHourSymbolsToDaySymbols = (hourSymbols) => {
 
     // Showing "worst" weather for the given periods instead of the most occuring seems better to not miss rain etc
     // Then the users can expect that weather as the worst for the period.
-    result.nightSymbol = night.length > 0 ? Math.max(...night) : undefined; //findMaxOccuringElement(night);
-    result.morningSymbol = morning.length > 0 ? Math.max(...morning) : undefined; //findMaxOccuringElement(morning);
-    result.afternoonSymbol = afternoon.length > 0 ? Math.max(...afternoon) : undefined; //findMaxOccuringElement(afternoon);
-    result.eveningSymbol = evening.length > 0 ? Math.max(...evening) : undefined; //findMaxOccuringElement(evening);
+    // Update: Now we'r showing most occuring due to strings instead of numbers..
+    result.nightSymbol = night.length > 0 ? findMaxOccuringElement(night) : undefined; //Math.max(...night)
+    result.morningSymbol = morning.length > 0 ? findMaxOccuringElement(morning) : undefined; //Math.max(...morning);
+    result.afternoonSymbol = afternoon.length > 0 ? findMaxOccuringElement(afternoon) : undefined; //Math.max(...afternoon);
+    result.eveningSymbol = evening.length > 0 ? findMaxOccuringElement(evening) : undefined; //Math.max(...evening);
 
     return result;
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
-
-const WICON_TEMPLATE = 'https://api.met.no/weatherapi/weathericon/1.1/?symbol={WSYMB}&is_night={NIGHT}&content_type=image/png';
+import getIcon from '../icons/WeatherIcons';
 
 export const HourlyForecastRow = (props) => {
     const viewModel = props.viewModel;
@@ -21,7 +20,7 @@ export const HourlyForecastRow = (props) => {
                 {viewModel ? `${viewModel.temp}°` : '-'}
             </Typography>
             <Typography className='forecastrow-symbol-container' variant={variant}>
-                {viewModel ? <img src={WICON_TEMPLATE.replace('{WSYMB}', viewModel.weatherSymbol).replace('{NIGHT}', isNight)} alt='weathericon' /> : '-'}
+                {viewModel ? getIcon(viewModel.weatherSymbol, isNight ? false : true) : '-'}
             </Typography>
             <Typography className='forecastrow-wind-container' variant={variant}>
                 {viewModel ? `${viewModel.windspeed} (${viewModel.gust !== null ? viewModel.gust : '-'}) m/s` : '-'}

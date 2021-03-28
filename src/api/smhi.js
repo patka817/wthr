@@ -3,6 +3,7 @@ import { fetchAndExtractJSON } from './util';
 import { Forecast, Time } from './../timeSerie';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
+import { YR_OLD_TO_NEW } from './yr';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
@@ -102,7 +103,7 @@ const parseResponseJSON = (json) => {
 
             const smhiSymbol = x.parameters.find(val => val.name === 'Wsymb2').values[0];
             if (smhiSymbol !== null && smhiSymbol !== undefined) {
-                instantaniouslyTime.weatherSymbol = SMHI_TO_YR_SYMB_MAPPING[smhiSymbol];
+                instantaniouslyTime.weatherSymbol = YR_OLD_TO_NEW[SMHI_TO_YR_SYMB_MAPPING[smhiSymbol]];
             } else {
                 instantaniouslyTime.weatherSymbol = 0;
             }

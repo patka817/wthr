@@ -6,8 +6,52 @@ import { useSelector } from 'react-redux';
 
 const PLACEHOLDER_LAT = '{latitude}';
 const PLACEHOLDER_LON = '{longitude}';
-const YR_VERSION = 1.9;
-const YR_API = `https://api.met.no/weatherapi/locationforecast/${YR_VERSION}/?lat={latitude}&lon={longitude}&msl=70`;
+const YR_VERSION = "2.0";
+const YR_API = `https://api.met.no/weatherapi/locationforecast/${YR_VERSION}/classic?lat={latitude}&lon={longitude}`;
+
+export const YR_OLD_TO_NEW = {
+    1: "clearsky",
+    2: "fair",
+    3: "partlycloudy",
+    4: "cloudy",
+    5: "rainshowers",
+    6: "rainshowersandthunder",
+    7: "sleetshowers",
+    8: "snowshowers",
+    9: "rain",
+    10: "heavyrain",
+    11: "heavyrainandthunder",
+    12: "sleet",
+    13: "snow",
+    14: "snowandthunder",
+    15: "fog",
+    20: "sleetshowersandthunder",
+    21: "snowshowersandthunder",
+    22: "rainandthunder",
+    23: "sleetandthunder",
+    24: "lightrainshowersandthunder",
+    25: "heavyrainshowersandthunder",
+    26: "lightssleetshowersandthunder",
+    27: "heavysleetshowersandthunder",
+    28: "lightssnowshowersandthunder",
+    29: "heavysnowshowersandthunder",
+    30: "lightrainandthunder",
+    31: "lightsleetandthunder",
+    32: "heavysleetandthunder",
+    33: "lightsnowandthunder",
+    34: "heavysnowandthunder",
+    40: "lightrainshowers",
+    41: "heavyrainshowers",
+    42: "lightsleetshowers",
+    43: "heavysleetshowers",
+    44: "lightsnowshowers",
+    45: "heavysnowshowers",
+    46: "lightrain",
+    47: "lightsleet",
+    48: "heavysleet",
+    49: "lightsnow",
+    50: "heavysnow",
+}
 
 // SMHI is missing a lot of these .. Mostly the different thunder-types.. 
 const YR_TO_SMHI_SYMB_MAPPING = {
@@ -160,7 +204,7 @@ const parseResponseXML = (txt) => {
             const symbol = xmlTimeSerie.getElementsByTagName('symbol') ? xmlTimeSerie.getElementsByTagName('symbol')[0] : null;
             if (symbol && symbol.getAttribute('number')) {
                 const yrNumber = parseInt(symbol.getAttribute('number'));
-                timeSerie.weatherSymbol = yrNumber;
+                timeSerie.weatherSymbol =  YR_OLD_TO_NEW[yrNumber];
 
                 if (timeSerie.weatherSymbol === 0) {
                     console.error('Missing mapping for YR-symbol: ' + yrNumber);

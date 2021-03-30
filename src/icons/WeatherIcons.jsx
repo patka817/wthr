@@ -84,259 +84,259 @@ import sleetshowers_night from './sleetshowers_night.svg';
 import lightsleetshowers_night from './lightsleetshowers_night.svg';
 import heavyrain from './heavyrain.svg';
 
-export default function getIcon(name, isDay) {
+export default function getIcon(name, isDay, className) {
     const suffix = isDay ? "_day" : "_night";
     if (name === 'heavyrainandthunder' || (name + suffix) === 'heavyrainandthunder') {
-        return (<img src={heavyrainandthunder} alt="heavyrainandthunder"  />);
+        return (<img className={className} src={heavyrainandthunder} alt="heavyrainandthunder"  />);
     }
     if (name === 'lightrain' || (name + suffix) === 'lightrain') {
-        return (<img src={lightrain} alt="lightrain"  />);
+        return (<img className={className} src={lightrain} alt="lightrain"  />);
     }
     if (name === 'heavysnowshowersandthunder_polartwilight' || (name + suffix) === 'heavysnowshowersandthunder_polartwilight') {
-        return (<img src={heavysnowshowersandthunder_polartwilight} alt="heavysnowshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={heavysnowshowersandthunder_polartwilight} alt="heavysnowshowersandthunder_polartwilight"  />);
     }
     if (name === 'heavyrainshowers_polartwilight' || (name + suffix) === 'heavyrainshowers_polartwilight') {
-        return (<img src={heavyrainshowers_polartwilight} alt="heavyrainshowers_polartwilight"  />);
+        return (<img className={className} src={heavyrainshowers_polartwilight} alt="heavyrainshowers_polartwilight"  />);
     }
     if (name === 'lightrainshowers_night' || (name + suffix) === 'lightrainshowers_night') {
-        return (<img src={lightrainshowers_night} alt="lightrainshowers_night"  />);
+        return (<img className={className} src={lightrainshowers_night} alt="lightrainshowers_night"  />);
     }
     if (name === 'lightrainshowersandthunder_polartwilight' || (name + suffix) === 'lightrainshowersandthunder_polartwilight') {
-        return (<img src={lightrainshowersandthunder_polartwilight} alt="lightrainshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={lightrainshowersandthunder_polartwilight} alt="lightrainshowersandthunder_polartwilight"  />);
     }
     if (name === 'fair_day' || (name + suffix) === 'fair_day') {
-        return (<img src={fair_day} alt="fair_day"  />);
+        return (<img className={className} src={fair_day} alt="fair_day"  />);
     }
     if (name === 'lightsnowshowers_night' || (name + suffix) === 'lightsnowshowers_night') {
-        return (<img src={lightsnowshowers_night} alt="lightsnowshowers_night"  />);
+        return (<img className={className} src={lightsnowshowers_night} alt="lightsnowshowers_night"  />);
     }
     if (name === 'snow' || (name + suffix) === 'snow') {
-        return (<img src={snow} alt="snow"  />);
+        return (<img className={className} src={snow} alt="snow"  />);
     }
     if (name === 'heavysleetshowersandthunder_night' || (name + suffix) === 'heavysleetshowersandthunder_night') {
-        return (<img src={heavysleetshowersandthunder_night} alt="heavysleetshowersandthunder_night"  />);
+        return (<img className={className} src={heavysleetshowersandthunder_night} alt="heavysleetshowersandthunder_night"  />);
     }
     if (name === 'lightsnowandthunder' || (name + suffix) === 'lightsnowandthunder') {
-        return (<img src={lightsnowandthunder} alt="lightsnowandthunder"  />);
+        return (<img className={className} src={lightsnowandthunder} alt="lightsnowandthunder"  />);
     }
     if (name === 'snowshowersandthunder_day' || (name + suffix) === 'snowshowersandthunder_day') {
-        return (<img src={snowshowersandthunder_day} alt="snowshowersandthunder_day"  />);
+        return (<img className={className} src={snowshowersandthunder_day} alt="snowshowersandthunder_day"  />);
     }
     if (name === 'sleetshowers_day' || (name + suffix) === 'sleetshowers_day') {
-        return (<img src={sleetshowers_day} alt="sleetshowers_day"  />);
+        return (<img className={className} src={sleetshowers_day} alt="sleetshowers_day"  />);
     }
     if (name === 'heavyrainshowersandthunder_night' || (name + suffix) === 'heavyrainshowersandthunder_night') {
-        return (<img src={heavyrainshowersandthunder_night} alt="heavyrainshowersandthunder_night"  />);
+        return (<img className={className} src={heavyrainshowersandthunder_night} alt="heavyrainshowersandthunder_night"  />);
     }
     if (name === 'rainandthunder' || (name + suffix) === 'rainandthunder') {
-        return (<img src={rainandthunder} alt="rainandthunder"  />);
+        return (<img className={className} src={rainandthunder} alt="rainandthunder"  />);
     }
     if (name === 'lightssnowshowersandthunder_day' || (name + suffix) === 'lightssnowshowersandthunder_day') {
-        return (<img src={lightssnowshowersandthunder_day} alt="lightssnowshowersandthunder_day"  />);
+        return (<img className={className} src={lightssnowshowersandthunder_day} alt="lightssnowshowersandthunder_day"  />);
     }
     if (name === 'WeatherIcons' || (name + suffix) === 'WeatherIcons') {
-        return (<img src={WeatherIcons} alt="WeatherIcons"  />);
+        return (<img className={className} src={WeatherIcons} alt="WeatherIcons"  />);
     }
     if (name === 'sleetshowersandthunder_night' || (name + suffix) === 'sleetshowersandthunder_night') {
-        return (<img src={sleetshowersandthunder_night} alt="sleetshowersandthunder_night"  />);
+        return (<img className={className} src={sleetshowersandthunder_night} alt="sleetshowersandthunder_night"  />);
     }
     if (name === 'rainshowersandthunder_night' || (name + suffix) === 'rainshowersandthunder_night') {
-        return (<img src={rainshowersandthunder_night} alt="rainshowersandthunder_night"  />);
+        return (<img className={className} src={rainshowersandthunder_night} alt="rainshowersandthunder_night"  />);
     }
     if (name === 'heavysleetandthunder' || (name + suffix) === 'heavysleetandthunder') {
-        return (<img src={heavysleetandthunder} alt="heavysleetandthunder"  />);
+        return (<img className={className} src={heavysleetandthunder} alt="heavysleetandthunder"  />);
     }
     if (name === 'sleetandthunder' || (name + suffix) === 'sleetandthunder') {
-        return (<img src={sleetandthunder} alt="sleetandthunder"  />);
+        return (<img className={className} src={sleetandthunder} alt="sleetandthunder"  />);
     }
     if (name === 'heavysleet' || (name + suffix) === 'heavysleet') {
-        return (<img src={heavysleet} alt="heavysleet"  />);
+        return (<img className={className} src={heavysleet} alt="heavysleet"  />);
     }
     if (name === 'lightsnowshowers_polartwilight' || (name + suffix) === 'lightsnowshowers_polartwilight') {
-        return (<img src={lightsnowshowers_polartwilight} alt="lightsnowshowers_polartwilight"  />);
+        return (<img className={className} src={lightsnowshowers_polartwilight} alt="lightsnowshowers_polartwilight"  />);
     }
     if (name === 'rainshowersandthunder_day' || (name + suffix) === 'rainshowersandthunder_day') {
-        return (<img src={rainshowersandthunder_day} alt="rainshowersandthunder_day"  />);
+        return (<img className={className} src={rainshowersandthunder_day} alt="rainshowersandthunder_day"  />);
     }
     if (name === 'lightrainshowersandthunder_night' || (name + suffix) === 'lightrainshowersandthunder_night') {
-        return (<img src={lightrainshowersandthunder_night} alt="lightrainshowersandthunder_night"  />);
+        return (<img className={className} src={lightrainshowersandthunder_night} alt="lightrainshowersandthunder_night"  />);
     }
     if (name === 'snowshowers_night' || (name + suffix) === 'snowshowers_night') {
-        return (<img src={snowshowers_night} alt="snowshowers_night"  />);
+        return (<img className={className} src={snowshowers_night} alt="snowshowers_night"  />);
     }
     if (name === 'heavysnowshowers_night' || (name + suffix) === 'heavysnowshowers_night') {
-        return (<img src={heavysnowshowers_night} alt="heavysnowshowers_night"  />);
+        return (<img className={className} src={heavysnowshowers_night} alt="heavysnowshowers_night"  />);
     }
     if (name === 'lightsleet' || (name + suffix) === 'lightsleet') {
-        return (<img src={lightsleet} alt="lightsleet"  />);
+        return (<img className={className} src={lightsleet} alt="lightsleet"  />);
     }
     if (name === 'fair_night' || (name + suffix) === 'fair_night') {
-        return (<img src={fair_night} alt="fair_night"  />);
+        return (<img className={className} src={fair_night} alt="fair_night"  />);
     }
     if (name === 'heavysleetshowersandthunder_polartwilight' || (name + suffix) === 'heavysleetshowersandthunder_polartwilight') {
-        return (<img src={heavysleetshowersandthunder_polartwilight} alt="heavysleetshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={heavysleetshowersandthunder_polartwilight} alt="heavysleetshowersandthunder_polartwilight"  />);
     }
     if (name === 'heavyrainshowers_night' || (name + suffix) === 'heavyrainshowers_night') {
-        return (<img src={heavyrainshowers_night} alt="heavyrainshowers_night"  />);
+        return (<img className={className} src={heavyrainshowers_night} alt="heavyrainshowers_night"  />);
     }
     if (name === 'sleetshowersandthunder_day' || (name + suffix) === 'sleetshowersandthunder_day') {
-        return (<img src={sleetshowersandthunder_day} alt="sleetshowersandthunder_day"  />);
+        return (<img className={className} src={sleetshowersandthunder_day} alt="sleetshowersandthunder_day"  />);
     }
     if (name === 'rainshowers_day' || (name + suffix) === 'rainshowers_day') {
-        return (<img src={rainshowers_day} alt="rainshowers_day"  />);
+        return (<img className={className} src={rainshowers_day} alt="rainshowers_day"  />);
     }
     if (name === 'heavyrainshowers_day' || (name + suffix) === 'heavyrainshowers_day') {
-        return (<img src={heavyrainshowers_day} alt="heavyrainshowers_day"  />);
+        return (<img className={className} src={heavyrainshowers_day} alt="heavyrainshowers_day"  />);
     }
     if (name === 'lightssleetshowersandthunder_day' || (name + suffix) === 'lightssleetshowersandthunder_day') {
-        return (<img src={lightssleetshowersandthunder_day} alt="lightssleetshowersandthunder_day"  />);
+        return (<img className={className} src={lightssleetshowersandthunder_day} alt="lightssleetshowersandthunder_day"  />);
     }
     if (name === 'rainshowers_night' || (name + suffix) === 'rainshowers_night') {
-        return (<img src={rainshowers_night} alt="rainshowers_night"  />);
+        return (<img className={className} src={rainshowers_night} alt="rainshowers_night"  />);
     }
     if (name === 'clearsky_night' || (name + suffix) === 'clearsky_night') {
-        return (<img src={clearsky_night} alt="clearsky_night"  />);
+        return (<img className={className} src={clearsky_night} alt="clearsky_night"  />);
     }
     if (name === 'lightrainshowers_polartwilight' || (name + suffix) === 'lightrainshowers_polartwilight') {
-        return (<img src={lightrainshowers_polartwilight} alt="lightrainshowers_polartwilight"  />);
+        return (<img className={className} src={lightrainshowers_polartwilight} alt="lightrainshowers_polartwilight"  />);
     }
     if (name === 'fog' || (name + suffix) === 'fog') {
-        return (<img src={fog} alt="fog"  />);
+        return (<img className={className} src={fog} alt="fog"  />);
     }
     if (name === 'heavysnow' || (name + suffix) === 'heavysnow') {
-        return (<img src={heavysnow} alt="heavysnow"  />);
+        return (<img className={className} src={heavysnow} alt="heavysnow"  />);
     }
     if (name === 'heavysnowshowers_polartwilight' || (name + suffix) === 'heavysnowshowers_polartwilight') {
-        return (<img src={heavysnowshowers_polartwilight} alt="heavysnowshowers_polartwilight"  />);
+        return (<img className={className} src={heavysnowshowers_polartwilight} alt="heavysnowshowers_polartwilight"  />);
     }
     if (name === 'heavysleetshowers_polartwilight' || (name + suffix) === 'heavysleetshowers_polartwilight') {
-        return (<img src={heavysleetshowers_polartwilight} alt="heavysleetshowers_polartwilight"  />);
+        return (<img className={className} src={heavysleetshowers_polartwilight} alt="heavysleetshowers_polartwilight"  />);
     }
     if (name === 'heavyrainshowersandthunder_polartwilight' || (name + suffix) === 'heavyrainshowersandthunder_polartwilight') {
-        return (<img src={heavyrainshowersandthunder_polartwilight} alt="heavyrainshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={heavyrainshowersandthunder_polartwilight} alt="heavyrainshowersandthunder_polartwilight"  />);
     }
     if (name === 'lightsnowshowers_day' || (name + suffix) === 'lightsnowshowers_day') {
-        return (<img src={lightsnowshowers_day} alt="lightsnowshowers_day"  />);
+        return (<img className={className} src={lightsnowshowers_day} alt="lightsnowshowers_day"  />);
     }
     if (name === 'sleet' || (name + suffix) === 'sleet') {
-        return (<img src={sleet} alt="sleet"  />);
+        return (<img className={className} src={sleet} alt="sleet"  />);
     }
     if (name === 'fair_polartwilight' || (name + suffix) === 'fair_polartwilight') {
-        return (<img src={fair_polartwilight} alt="fair_polartwilight"  />);
+        return (<img className={className} src={fair_polartwilight} alt="fair_polartwilight"  />);
     }
     if (name === 'partlycloudy_day' || (name + suffix) === 'partlycloudy_day') {
-        return (<img src={partlycloudy_day} alt="partlycloudy_day"  />);
+        return (<img className={className} src={partlycloudy_day} alt="partlycloudy_day"  />);
     }
     if (name === 'snowshowersandthunder_polartwilight' || (name + suffix) === 'snowshowersandthunder_polartwilight') {
-        return (<img src={snowshowersandthunder_polartwilight} alt="snowshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={snowshowersandthunder_polartwilight} alt="snowshowersandthunder_polartwilight"  />);
     }
     if (name === 'rain' || (name + suffix) === 'rain') {
-        return (<img src={rain} alt="rain"  />);
+        return (<img className={className} src={rain} alt="rain"  />);
     }
     if (name === 'clearsky_day' || (name + suffix) === 'clearsky_day') {
-        return (<img src={clearsky_day} alt="clearsky_day"  />);
+        return (<img className={className} src={clearsky_day} alt="clearsky_day"  />);
     }
     if (name === 'partlycloudy_night' || (name + suffix) === 'partlycloudy_night') {
-        return (<img src={partlycloudy_night} alt="partlycloudy_night"  />);
+        return (<img className={className} src={partlycloudy_night} alt="partlycloudy_night"  />);
     }
     if (name === 'snowshowers_polartwilight' || (name + suffix) === 'snowshowers_polartwilight') {
-        return (<img src={snowshowers_polartwilight} alt="snowshowers_polartwilight"  />);
+        return (<img className={className} src={snowshowers_polartwilight} alt="snowshowers_polartwilight"  />);
     }
     if (name === 'lightsleetshowers_day' || (name + suffix) === 'lightsleetshowers_day') {
-        return (<img src={lightsleetshowers_day} alt="lightsleetshowers_day"  />);
+        return (<img className={className} src={lightsleetshowers_day} alt="lightsleetshowers_day"  />);
     }
     if (name === 'lightsnow' || (name + suffix) === 'lightsnow') {
-        return (<img src={lightsnow} alt="lightsnow"  />);
+        return (<img className={className} src={lightsnow} alt="lightsnow"  />);
     }
     if (name === 'heavysnowshowers_day' || (name + suffix) === 'heavysnowshowers_day') {
-        return (<img src={heavysnowshowers_day} alt="heavysnowshowers_day"  />);
+        return (<img className={className} src={heavysnowshowers_day} alt="heavysnowshowers_day"  />);
     }
     if (name === 'snowshowers_day' || (name + suffix) === 'snowshowers_day') {
-        return (<img src={snowshowers_day} alt="snowshowers_day"  />);
+        return (<img className={className} src={snowshowers_day} alt="snowshowers_day"  />);
     }
     if (name === 'lightrainshowers_day' || (name + suffix) === 'lightrainshowers_day') {
-        return (<img src={lightrainshowers_day} alt="lightrainshowers_day"  />);
+        return (<img className={className} src={lightrainshowers_day} alt="lightrainshowers_day"  />);
     }
     if (name === 'snowshowersandthunder_night' || (name + suffix) === 'snowshowersandthunder_night') {
-        return (<img src={snowshowersandthunder_night} alt="snowshowersandthunder_night"  />);
+        return (<img className={className} src={snowshowersandthunder_night} alt="snowshowersandthunder_night"  />);
     }
     if (name === 'heavysnowshowersandthunder_night' || (name + suffix) === 'heavysnowshowersandthunder_night') {
-        return (<img src={heavysnowshowersandthunder_night} alt="heavysnowshowersandthunder_night"  />);
+        return (<img className={className} src={heavysnowshowersandthunder_night} alt="heavysnowshowersandthunder_night"  />);
     }
     if (name === 'heavyrainshowersandthunder_day' || (name + suffix) === 'heavyrainshowersandthunder_day') {
-        return (<img src={heavyrainshowersandthunder_day} alt="heavyrainshowersandthunder_day"  />);
+        return (<img className={className} src={heavyrainshowersandthunder_day} alt="heavyrainshowersandthunder_day"  />);
     }
     if (name === 'lightssleetshowersandthunder_night' || (name + suffix) === 'lightssleetshowersandthunder_night') {
-        return (<img src={lightssleetshowersandthunder_night} alt="lightssleetshowersandthunder_night"  />);
+        return (<img className={className} src={lightssleetshowersandthunder_night} alt="lightssleetshowersandthunder_night"  />);
     }
     if (name === 'sleetshowersandthunder_polartwilight' || (name + suffix) === 'sleetshowersandthunder_polartwilight') {
-        return (<img src={sleetshowersandthunder_polartwilight} alt="sleetshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={sleetshowersandthunder_polartwilight} alt="sleetshowersandthunder_polartwilight"  />);
     }
     if (name === 'lightsleetandthunder' || (name + suffix) === 'lightsleetandthunder') {
-        return (<img src={lightsleetandthunder} alt="lightsleetandthunder"  />);
+        return (<img className={className} src={lightsleetandthunder} alt="lightsleetandthunder"  />);
     }
     if (name === 'heavysnowandthunder' || (name + suffix) === 'heavysnowandthunder') {
-        return (<img src={heavysnowandthunder} alt="heavysnowandthunder"  />);
+        return (<img className={className} src={heavysnowandthunder} alt="heavysnowandthunder"  />);
     }
     if (name === 'lightsleetshowers_polartwilight' || (name + suffix) === 'lightsleetshowers_polartwilight') {
-        return (<img src={lightsleetshowers_polartwilight} alt="lightsleetshowers_polartwilight"  />);
+        return (<img className={className} src={lightsleetshowers_polartwilight} alt="lightsleetshowers_polartwilight"  />);
     }
     if (name === 'clearsky_polartwilight' || (name + suffix) === 'clearsky_polartwilight') {
-        return (<img src={clearsky_polartwilight} alt="clearsky_polartwilight"  />);
+        return (<img className={className} src={clearsky_polartwilight} alt="clearsky_polartwilight"  />);
     }
     if (name === 'lightssnowshowersandthunder_night' || (name + suffix) === 'lightssnowshowersandthunder_night') {
-        return (<img src={lightssnowshowersandthunder_night} alt="lightssnowshowersandthunder_night"  />);
+        return (<img className={className} src={lightssnowshowersandthunder_night} alt="lightssnowshowersandthunder_night"  />);
     }
     if (name === 'partlycloudy_polartwilight' || (name + suffix) === 'partlycloudy_polartwilight') {
-        return (<img src={partlycloudy_polartwilight} alt="partlycloudy_polartwilight"  />);
+        return (<img className={className} src={partlycloudy_polartwilight} alt="partlycloudy_polartwilight"  />);
     }
     if (name === 'lightssleetshowersandthunder_polartwilight' || (name + suffix) === 'lightssleetshowersandthunder_polartwilight') {
-        return (<img src={lightssleetshowersandthunder_polartwilight} alt="lightssleetshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={lightssleetshowersandthunder_polartwilight} alt="lightssleetshowersandthunder_polartwilight"  />);
     }
     if (name === 'heavysnowshowersandthunder_day' || (name + suffix) === 'heavysnowshowersandthunder_day') {
-        return (<img src={heavysnowshowersandthunder_day} alt="heavysnowshowersandthunder_day"  />);
+        return (<img className={className} src={heavysnowshowersandthunder_day} alt="heavysnowshowersandthunder_day"  />);
     }
     if (name === 'heavysleetshowersandthunder_day' || (name + suffix) === 'heavysleetshowersandthunder_day') {
-        return (<img src={heavysleetshowersandthunder_day} alt="heavysleetshowersandthunder_day"  />);
+        return (<img className={className} src={heavysleetshowersandthunder_day} alt="heavysleetshowersandthunder_day"  />);
     }
     if (name === 'snowandthunder' || (name + suffix) === 'snowandthunder') {
-        return (<img src={snowandthunder} alt="snowandthunder"  />);
+        return (<img className={className} src={snowandthunder} alt="snowandthunder"  />);
     }
     if (name === 'cloudy' || (name + suffix) === 'cloudy') {
-        return (<img src={cloudy} alt="cloudy"  />);
+        return (<img className={className} src={cloudy} alt="cloudy"  />);
     }
     if (name === 'lightssnowshowersandthunder_polartwilight' || (name + suffix) === 'lightssnowshowersandthunder_polartwilight') {
-        return (<img src={lightssnowshowersandthunder_polartwilight} alt="lightssnowshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={lightssnowshowersandthunder_polartwilight} alt="lightssnowshowersandthunder_polartwilight"  />);
     }
     if (name === 'rainshowersandthunder_polartwilight' || (name + suffix) === 'rainshowersandthunder_polartwilight') {
-        return (<img src={rainshowersandthunder_polartwilight} alt="rainshowersandthunder_polartwilight"  />);
+        return (<img className={className} src={rainshowersandthunder_polartwilight} alt="rainshowersandthunder_polartwilight"  />);
     }
     if (name === 'heavysleetshowers_day' || (name + suffix) === 'heavysleetshowers_day') {
-        return (<img src={heavysleetshowers_day} alt="heavysleetshowers_day"  />);
+        return (<img className={className} src={heavysleetshowers_day} alt="heavysleetshowers_day"  />);
     }
     if (name === 'sleetshowers_polartwilight' || (name + suffix) === 'sleetshowers_polartwilight') {
-        return (<img src={sleetshowers_polartwilight} alt="sleetshowers_polartwilight"  />);
+        return (<img className={className} src={sleetshowers_polartwilight} alt="sleetshowers_polartwilight"  />);
     }
     if (name === 'heavysleetshowers_night' || (name + suffix) === 'heavysleetshowers_night') {
-        return (<img src={heavysleetshowers_night} alt="heavysleetshowers_night"  />);
+        return (<img className={className} src={heavysleetshowers_night} alt="heavysleetshowers_night"  />);
     }
     if (name === 'lightrainandthunder' || (name + suffix) === 'lightrainandthunder') {
-        return (<img src={lightrainandthunder} alt="lightrainandthunder"  />);
+        return (<img className={className} src={lightrainandthunder} alt="lightrainandthunder"  />);
     }
     if (name === 'lightrainshowersandthunder_day' || (name + suffix) === 'lightrainshowersandthunder_day') {
-        return (<img src={lightrainshowersandthunder_day} alt="lightrainshowersandthunder_day"  />);
+        return (<img className={className} src={lightrainshowersandthunder_day} alt="lightrainshowersandthunder_day"  />);
     }
     if (name === 'rainshowers_polartwilight' || (name + suffix) === 'rainshowers_polartwilight') {
-        return (<img src={rainshowers_polartwilight} alt="rainshowers_polartwilight"  />);
+        return (<img className={className} src={rainshowers_polartwilight} alt="rainshowers_polartwilight"  />);
     }
     if (name === 'sleetshowers_night' || (name + suffix) === 'sleetshowers_night') {
-        return (<img src={sleetshowers_night} alt="sleetshowers_night"  />);
+        return (<img className={className} src={sleetshowers_night} alt="sleetshowers_night"  />);
     }
     if (name === 'lightsleetshowers_night' || (name + suffix) === 'lightsleetshowers_night') {
-        return (<img src={lightsleetshowers_night} alt="lightsleetshowers_night"  />);
+        return (<img className={className} src={lightsleetshowers_night} alt="lightsleetshowers_night"  />);
     }
     if (name === 'heavyrain' || (name + suffix) === 'heavyrain') {
-        return (<img src={heavyrain} alt="heavyrain"  />);
+        return (<img className={className} src={heavyrain} alt="heavyrain"  />);
     }
     return null;
 };

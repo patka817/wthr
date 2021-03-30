@@ -18,11 +18,11 @@ for filename in os.listdir(icon_dir):
     list_of_icons.append(name)
 generated_file += "\n"
 
-generated_file += "export default function getIcon(name, isDay) {\n"
+generated_file += "export default function getIcon(name, isDay, className) {\n"
 generated_file += '    const suffix = isDay ? "_day" : "_night";\n'
 for icon in list_of_icons:
     generated_file += '    if (name === \'' + icon + '\' || (name + suffix) === \'' + icon + '\') {\n'
-    generated_file += '        return (<img src={' + icon + '} alt="' + icon + '"  />);\n'
+    generated_file += '        return (<img className={' + 'className} src={' + icon + '} alt="' + icon + '"  />);\n'
     generated_file += '    }\n'
 generated_file += "    return null;\n"
 generated_file += "};\n"

@@ -42,6 +42,6 @@ export const DailyWeatherRow = (props) => {
 
 const WeatherIcon = (props) => {
     return (
-        getIcon(props.symbol, props.isDay)
+        getIcon(props.symbol, props.isDay, props.className)
     );
 }
